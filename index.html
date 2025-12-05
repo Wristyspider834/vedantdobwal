@@ -5,39 +5,37 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Vedant Dobwal — Research</title>
 
-  <!-- Import Arimo font -->
+  <!-- Arimo font -->
   <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --text: rgba(255,255,255,0.94);
+      --text: rgba(255,255,255,0.95);
       --text-soft: rgba(255,255,255,0.82);
-      --border: rgba(255,255,255,0.17);
-      --panel-bg: rgba(0,0,0,0.15);
-      --accent: #ffd8a6; /* warm highlight inspired by eclipse */
+      --accent: #ffd8a6;
+      --border: rgba(255,255,255,0.14);
+      --panel-bg: rgba(0,0,0,0.16);
       --radius: 14px;
       --max: 1100px;
     }
 
     html,body{height:100%;}
-
     body{
       margin:0;
-      font-family: 'Arimo', sans-serif;
+      font-family:'Arimo',sans-serif;
       color:var(--text);
       padding:46px 20px;
       display:flex;
       justify-content:center;
       background-image:
         linear-gradient(0deg, rgba(0,0,0,0.40), rgba(0,0,0,0.12)),
-        url('gradient.jpg'); /* keep YOUR background exactly */
+        url('gradient.jpg'); 
       background-size:cover;
       background-position:center;
       background-attachment:fixed;
       overflow-y:auto;
     }
 
-    /* grain overlay */
     body::after{
       content:"";
       position:fixed;
@@ -56,7 +54,6 @@
       z-index:1;
     }
 
-    /* top header */
     header{
       display:flex;
       gap:22px;
@@ -64,16 +61,14 @@
       margin-bottom:26px;
     }
 
-    .photo {
+    .photo{
       width:130px;
       height:130px;
-      border-radius: var(--radius);
+      border-radius:var(--radius);
       overflow:hidden;
       border:1.5px solid var(--border);
     }
-    .photo img{
-      width:100%; height:100%; object-fit:cover;
-    }
+    .photo img{width:100%;height:100%;object-fit:cover;}
 
     h1{
       margin:0;
@@ -95,7 +90,6 @@
       margin-top:12px;
       flex-wrap:wrap;
     }
-
     nav.nav a{
       text-decoration:none;
       color:var(--text);
@@ -105,29 +99,25 @@
       border:1px solid rgba(255,255,255,0.14);
       background:rgba(0,0,0,0.18);
     }
-
     .cv-btn{
       border-color:var(--accent);
       color:var(--accent);
       font-weight:600;
     }
 
-    /* page grid */
     .grid{
       display:grid;
-      grid-template-columns: 1fr 360px;
+      grid-template-columns:1fr 360px;
       gap:20px;
       margin-top:20px;
     }
 
-    /* flat artistic scientific panels */
     .panel{
       padding:20px;
       background:var(--panel-bg);
       border:1px solid var(--border);
       border-radius:var(--radius);
     }
-
     .panel h2{
       margin:0 0 8px 0;
       font-size:18px;
@@ -135,7 +125,6 @@
       color:var(--accent);
       letter-spacing:0.3px;
     }
-
     .panel p{
       margin:0;
       font-size:14.5px;
@@ -143,35 +132,32 @@
       color:var(--text-soft);
     }
 
-    /* project blocks */
     .projects{
       display:grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns:1fr;
       gap:14px;
-      margin-top:10px;
+      margin-top:12px;
     }
 
     .proj{
-      padding:14px;
-      background:rgba(0,0,0,0.18);
+      padding:16px;
+      background:rgba(0,0,0,0.20);
       border-radius:var(--radius);
       border:1px solid rgba(255,255,255,0.12);
     }
-
     .proj h3{
-      margin:0 0 6px 0;
-      font-size:15px;
+      margin:0 0 8px 0;
+      font-size:16px;
       font-weight:600;
       color:var(--accent);
     }
     .proj p{
       margin:0;
-      font-size:13.5px;
-      line-height:1.48;
+      font-size:14px;
+      line-height:1.52;
       color:var(--text-soft);
     }
 
-    /* sidebar */
     aside{
       display:flex;
       flex-direction:column;
@@ -183,32 +169,16 @@
 
     .sidecard{
       padding:16px;
-      background:rgba(0,0,0,0.18);
+      background:rgba(0,0,0,0.20);
       border:1px solid var(--border);
       border-radius:var(--radius);
       color:var(--text-soft);
     }
-
     .sidecard .title{
       font-size:14px;
       font-weight:600;
       color:var(--accent);
       margin-bottom:8px;
-    }
-
-    .tags{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-    }
-
-    .tag{
-      padding:8px 12px;
-      border-radius:999px;
-      font-size:12px;
-      background:rgba(255,255,255,0.10);
-      border:1px solid rgba(255,255,255,0.18);
-      color:var(--text);
     }
 
     footer{
@@ -219,29 +189,29 @@
     }
 
     @media(max-width:900px){
-      .grid{
-        grid-template-columns:1fr;
-      }
+      .grid{grid-template-columns:1fr;}
       aside{position:static;}
-      .projects{grid-template-columns:1fr;}
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
 
     <header>
-      <div class="photo"><img src="photo.jpg" alt="photo of Vedant Dobwal"></div>
+      <div class="photo"><img src="photo.jpg" alt="Vedant Dobwal portrait"></div>
       <div>
         <h1>Vedant Dobwal</h1>
-        <div class="subtitle">Undergraduate researcher · IISER (Math • Physics • Chemistry)</div>
-        <div class="subtitle">nonlinear dynamics, turing systems, jwst spectroscopy, dynamic equations</div>
+        <div class="subtitle">Undergraduate researcher · Physics & Mathematics</div>
+        <div class="subtitle">IISER Bhopal · IIT Guwahati (Data Science & AI)</div>
 
         <nav class="nav">
           <a href="#about">about</a>
           <a href="#research">research</a>
-          <a href="#notes">notes</a>
-          <a href="#skills">skills</a>
+          <a href="#blog">blog</a>
+          <a href="#interests">interests</a>
+          <a href="#affiliations">affiliations</a>
+          <a href="#mentions">considerations</a>
           <a href="#contact">contact</a>
           <a href="cv.pdf" target="_blank" class="cv-btn">cv</a>
         </nav>
@@ -252,85 +222,107 @@
 
       <div>
 
+        <!-- ABOUT -->
         <section class="panel" id="about">
           <h2>about</h2>
-          <p>I’m Vedant, a second-year undergraduate researcher at IISER. My work blends theoretical physics, nonlinear mathematics, and astrophysical data. I study multi-morphogen reaction–diffusion systems, build JWST MIRI spectral extraction tools in Python, and develop geometric formulations for families of dynamic equations.</p>
+          <p>Vedant Dobwal is a 19-year-old physics and mathematics student and independent researcher working at the interface of plasma physics, chaos theory, and nonlinear dynamical systems. He studies at IISER Bhopal (alongside a Data Science & AI program at IIT Guwahati) and focuses on using controlled chaos as a design principle for Maxwell-compatible plasma confinement frameworks. His recent work includes preprints on a novel chaos-engineered plasma confinement model and its perturbative derivation, positioning him as an early-career researcher contributing original ideas to both theoretical and applied physics. Recognized by platforms such as MIT OpenCourseWare’s Spotlight Stories and featured across Google Scholar, ORCID, and Academia.edu, Vedant aims to build a life in which rigorous science, mathematical elegance, and long-term impact on fundamental understanding of Nature naturally align.</p>
         </section>
 
+        <!-- RESEARCH -->
         <section class="panel" id="research">
           <h2>research</h2>
 
           <div class="projects">
 
             <div class="proj">
-              <h3>Turing & multi-morphogen systems</h3>
-              <p>Studying combinatorial morphogen interactions and richer instability patterns beyond classical two-species reaction–diffusion theory.</p>
+              <h3>Derivation of the Controlled-Chaos Perturbation Framework within Maxwell-MHD Dynamics</h3>
+              <p>This technical note provides a detailed derivation of the controlled-chaos perturbation term introduced in an earlier preprint on field-constrained dynamics. Beginning from the two-fluid electron momentum equation, the analysis demonstrates how the perturbation modifies generalized Ohm’s law and contributes a stabilizing, pressure-like term within Maxwell-consistent MHD balance. The work clarifies the mathematical sequence of steps involved in obtaining the perturbation, along with its physical interpretation as a chaos-induced corrective mechanism built into the magnetic–fluid system. Its purpose is not to introduce new assumptions, but to make the internal structure of the framework explicit, transparent, and analytically traceable for future theoretical expansions.</p>
             </div>
 
             <div class="proj">
-              <h3>Unified dynamic-equation geometry</h3>
-              <p>A single formulation representing families of curves/equations using shared mensurational invariants such as area and integral structure.</p>
-            </div>
-
-            <div class="proj">
-              <h3>JWST MIRI spectral extraction</h3>
-              <p>Automating region selection & line identification from MIRI cubes using numpy, scipy, astropy, and reproducible pipelines.</p>
-            </div>
-
-            <div class="proj">
-              <h3>Temporal energetic theory</h3>
-              <p>Developing early theoretical notions of temporal energetic behavior across dynamical systems and model responses.</p>
+              <h3>A Novel Maxwell-Compatible Framework for Plasma Confinement through Controlled Chaos</h3>
+              <p>This study introduces a theoretical and computational framework in which controlled chaos is utilized as a stabilizing mechanism for plasma confinement. The approach allows magnetic field structures to self-regulate through tunable perturbation parameters, producing localized attractors within bounded chaotic regions. These attractors restrict energy dispersion and enhance confinement stability without requiring suppression of turbulence. The framework modifies Maxwell-compatible field equations to support these regulated chaotic modes, ensuring consistency with Maxwell’s equations, energy conservation principles, and physical boundary constraints. Numerical simulations show transitions between diffusive and coherent magnetic topologies, revealing distinct confinement regimes. By demonstrating that guided chaoticity can serve as a stabilizing force, this work provides a new perspective on nonlinear plasma behavior with implications for magnetic confinement fusion, advanced plasma control strategies, and broader dynamical-systems research.</p>
             </div>
 
           </div>
         </section>
 
-        <section class="panel" id="notes">
-          <h2>notes</h2>
-          <p>Quantum Physics-1 notes, rewritten for conceptual clarity and junior accessibility. Structured PDF + annotated derivations + small runnable snippets.</p>
+        <!-- BLOG -->
+        <section class="panel" id="blog">
+          <h2>blog</h2>
+          <p>I write to refine my thinking, to document the evolution of ideas, and to make sense of the abstract structures that guide my research. The blog serves as a personal archive where mathematics, physics, and reflection converge into a narrative of curiosity and discipline.</p>
+          <br>
+          <p><strong>From a Lecture Hall to a Framework: My Accidental Path Through Chaos</strong><br>
+          A short account of how unplanned exploration in chaos theory led toward formulating a controlled-chaos plasma framework, and how academic structures unexpectedly tie into emergent ideas.</p>
+          <br>
+          <p><strong>Notes I Wrote (Why?)</strong><br>
+          A reflection on the motivations behind writing structured physics and mathematics notes—clarity, accessibility, and the desire to build conceptual bridges for learners.</p>
         </section>
 
+        <!-- INTERESTS -->
+        <section class="panel" id="interests">
+          <h2>interests</h2>
+          <p>astronomy, cosmology, energy physics, nuclear physics, quantum gravity/mechanics, turing patterns, mathematics (geometry, calculus, higher algebra), fluid mechanics, chaos theory, nonlinear systems</p>
+        </section>
+
+        <!-- AFFILIATIONS -->
+        <section class="panel" id="affiliations">
+          <h2>affiliations</h2>
+          <p>IISER Bhopal<br>
+             IIT Guwahati — Data Science & AI<br>
+             APS Member<br>
+             NASA Citizen Science Volunteer</p>
+        </section>
+
+        <!-- MENTIONS -->
+        <section class="panel" id="mentions">
+          <h2>considerations & mentions</h2>
+          <p>
+            <a href="https://www.researchgate.net/profile/Vedant-Dobwal" style="color:var(--accent);">ResearchGate</a><br>
+            <a href="#" style="color:var(--accent);">Zenodo</a><br>
+            <a href="#" style="color:var(--accent);">Academia.edu</a><br>
+            <a href="https://orcid.org/0009-0005-1124-0944" style="color:var(--accent);">ORCID</a><br>
+            MIT OCW Spotlight Stories (2025)<br>
+            NUPC Conference Presentee<br>
+            University of Pennsylvania — Philosophy of Science<br>
+            UC Irvine — Emergent Phenomena in Science<br>
+            CERN Education Solvay Programme<br>
+            University of London — Understanding Research Methods<br>
+            NASA Open Science 101<br>
+            HKUST — Introductory General Relativity & Cosmology
+          </p>
+        </section>
+
+        <!-- CONTACT -->
         <section class="panel" id="contact">
           <h2>contact</h2>
-          <p>Email: <a href="mailto:vedantdobwal@gmail.com" style="color:var(--accent); text-decoration:none;">vedantdobwal@gmail.com</a><br>
-             GitHub: <a href="https://github.com/vedantdobwal" style="color:var(--accent); text-decoration:none;">github.com/vedantdobwal</a></p>
+          <p>
+            Official (IISER): <a href="mailto:vedant24@iiserb.ac.in" style="color:var(--accent);">vedant24@iiserb.ac.in</a><br>
+            Personal: <a href="mailto:06.d.vedant@gmail.com" style="color:var(--accent);">06.d.vedant@gmail.com</a><br><br>
+
+            GitHub: <a href="https://github.com/Wristyspider834" style="color:var(--accent);">github.com/Wristyspider834</a><br>
+            Blog: <a href="https://outphysics.blogspot.com/" style="color:var(--accent);">outphysics.blogspot.com</a><br>
+            LinkedIn: <a href="https://www.linkedin.com/in/vedant-dobwal-738234207/" style="color:var(--accent);">linkedin</a><br>
+            ORCID: <a href="https://orcid.org/0009-0005-1124-0944" style="color:var(--accent);">orcid.org/0009-0005-1124-0944</a><br>
+            ResearchGate: <a href="https://www.researchgate.net/profile/Vedant-Dobwal" style="color:var(--accent);">profile</a><br>
+            Google Scholar: <a href="https://scholar.google.com/citations?user=wFNvX78AAAAJ&hl=en" style="color:var(--accent);">scholar profile</a>
+          </p>
         </section>
 
       </div>
 
-      <aside>
+      <aside></aside>
 
-        <div class="sidecard">
-          <div class="title">skills</div>
-          <div class="tags" id="skills">
-            <span class="tag">Python</span>
-            <span class="tag">numpy / scipy</span>
-            <span class="tag">astropy</span>
-            <span class="tag">JWST MIRI</span>
-            <span class="tag">spectral analysis</span>
-            <span class="tag">reaction–diffusion</span>
-            <span class="tag">Turing systems</span>
-            <span class="tag">numerical PDEs</span>
-            <span class="tag">LaTeX</span>
-            <span class="tag">Git</span>
-            <span class="tag">Lua (Love2D)</span>
-            <span class="tag">matplotlib</span>
-          </div>
-        </div>
-
-        <div class="sidecard">
-          <div class="title">affiliations</div>
-          IISER — Undergraduate Research Student<br>
-          NASA Citizen Scientist (volunteer)<br>
-          ISA Summer School — JWST MIRI
-        </div>
-
-      </aside>
     </div>
 
     <footer>
-      last updated: 2025 · designed in a scientific–artistic aesthetic
+      last updated: 2025
     </footer>
+
+  </div>
+</body>
+</html>
+
 
   </div>
 </body>
