@@ -5,327 +5,333 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Vedant Dobwal — Research</title>
 
-  <!-- favicon (simple V) -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='18' fill='%230b1220' /%3E%3Ctext x='50' y='58' font-size='46' text-anchor='middle' fill='%23ffd' font-family='system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial'%3EV%3C/text%3E%3C/svg%3E" />
+  <!-- Import Arimo font -->
+  <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root{
-      --max-width:1100px;
-      --muted: rgba(255,255,255,0.85);
-      --accent: rgba(255,255,255,0.96);
-      --card-bg: rgba(255,255,255,0.03);
-      --glass: rgba(255,255,255,0.04);
-      --gap: 22px;
-      --radius: 12px;
-      --border: rgba(255,255,255,0.06);
-      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", "Courier New", monospace;
-      --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      --text: rgba(255,255,255,0.94);
+      --text-soft: rgba(255,255,255,0.82);
+      --border: rgba(255,255,255,0.17);
+      --panel-bg: rgba(0,0,0,0.15);
+      --accent: #ffd8a6; /* warm highlight inspired by eclipse */
+      --radius: 14px;
+      --max: 1100px;
     }
 
-    /* background using provided gradient image (gradient.jpg) */
     html,body{height:100%;}
+
     body{
       margin:0;
-      min-height:100%;
-      font-family: var(--sans);
-      color:var(--accent);
+      font-family: 'Arimo', sans-serif;
+      color:var(--text);
+      padding:46px 20px;
       display:flex;
       justify-content:center;
-      padding:48px 20px;
       background-image:
-        linear-gradient(0deg, rgba(8,8,12,0.42), rgba(8,8,12,0.12)),
-        url('gradient.jpg');
+        linear-gradient(0deg, rgba(0,0,0,0.40), rgba(0,0,0,0.12)),
+        url('gradient.jpg'); /* keep YOUR background exactly */
       background-size:cover;
       background-position:center;
-      background-attachment: fixed;
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
+      background-attachment:fixed;
       overflow-y:auto;
     }
 
-    /* subtle grain overlay */
+    /* grain overlay */
     body::after{
       content:"";
       position:fixed;
       inset:0;
       pointer-events:none;
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence baseFrequency='0.8' numOctaves='2' seed='8' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='table' tableValues='0 0.08'/></feComponentTransfer></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.14' /></svg>");
-      mix-blend-mode: overlay;
+      background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='g'><feTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/><feComponentTransfer><feFuncA type='table' tableValues='0 0.12'/></feComponentTransfer></filter><rect width='100%' height='100%' filter='url(%23g)'/></svg>");
+      opacity:0.18;
+      mix-blend-mode:soft-light;
       z-index:0;
     }
 
-    /* container */
     .wrap{
       width:100%;
-      max-width:var(--max-width);
+      max-width:var(--max);
+      position:relative;
       z-index:1;
     }
 
-    .sheet{
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border-radius:18px;
-      padding:28px;
-      border:1px solid var(--border);
-      box-shadow: 0 18px 60px rgba(3,6,18,0.6);
-      backdrop-filter: blur(6px) saturate(120%);
-    }
-
-    /* header */
+    /* top header */
     header{
       display:flex;
-      gap:20px;
+      gap:22px;
       align-items:center;
-      margin-bottom:18px;
+      margin-bottom:26px;
     }
-    .avatar{
-      width:124px;
-      height:124px;
-      border-radius:8px;
-      overflow:hidden;
-      flex:0 0 124px;
-      border:1px solid rgba(255,255,255,0.06);
-      box-shadow: 0 8px 30px rgba(4,8,16,0.45);
-      background:linear-gradient(135deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    }
-    .avatar img{ width:100%; height:100%; object-fit:cover; display:block; filter:contrast(0.98) saturate(1.02); }
 
-    .meta {
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      justify-content:center;
+    .photo {
+      width:130px;
+      height:130px;
+      border-radius: var(--radius);
+      overflow:hidden;
+      border:1.5px solid var(--border);
     }
+    .photo img{
+      width:100%; height:100%; object-fit:cover;
+    }
+
     h1{
       margin:0;
       font-size:28px;
-      letter-spacing:0.2px;
-      color:var(--accent);
-    }
-    .role{
-      font-size:13px;
-      color:var(--muted);
-    }
-    .bio{
-      margin-top:6px;
-      font-size:14px;
-      color:var(--muted);
-      max-width:760px;
+      font-weight:700;
+      color:var(--text);
+      letter-spacing:0.4px;
     }
 
-    /* top nav pills */
-    nav.topnav{
-      margin-top:12px;
+    .subtitle{
+      font-size:14px;
+      margin-top:4px;
+      color:var(--text-soft);
+    }
+
+    nav.nav{
       display:flex;
-      gap:10px;
+      gap:12px;
+      margin-top:12px;
       flex-wrap:wrap;
     }
-    nav.topnav a{
-      color:var(--accent);
+
+    nav.nav a{
       text-decoration:none;
+      color:var(--text);
       font-size:13px;
-      padding:8px 12px;
+      padding:7px 14px;
       border-radius:999px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.03);
-    }
-    .cvbtn{
-      padding:9px 14px;
-      border-radius:10px;
-      font-weight:600;
-      text-decoration:none;
-      color:var(--accent);
-      border:1px solid rgba(255,255,255,0.06);
-      background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.14);
+      background:rgba(0,0,0,0.18);
     }
 
-    /* layout: grid with boxed panels */
+    .cv-btn{
+      border-color:var(--accent);
+      color:var(--accent);
+      font-weight:600;
+    }
+
+    /* page grid */
     .grid{
       display:grid;
       grid-template-columns: 1fr 360px;
-      gap:var(--gap);
-      margin-top:22px;
+      gap:20px;
+      margin-top:20px;
     }
 
-    .left{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:16px;
-    }
+    /* flat artistic scientific panels */
     .panel{
-      padding:16px;
-      border-radius:10px;
-      background:var(--card-bg);
+      padding:20px;
+      background:var(--panel-bg);
       border:1px solid var(--border);
+      border-radius:var(--radius);
     }
-    .panel h2{ margin:0 0 8px 0; font-size:16px; color:var(--accent); }
-    .panel p{ margin:0; color:var(--muted); line-height:1.6; font-size:14px; }
 
+    .panel h2{
+      margin:0 0 8px 0;
+      font-size:18px;
+      font-weight:600;
+      color:var(--accent);
+      letter-spacing:0.3px;
+    }
+
+    .panel p{
+      margin:0;
+      font-size:14.5px;
+      line-height:1.55;
+      color:var(--text-soft);
+    }
+
+    /* project blocks */
     .projects{
       display:grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap:12px;
+      grid-template-columns: 1fr 1fr;
+      gap:14px;
+      margin-top:10px;
     }
+
     .proj{
-      padding:12px;
-      border-radius:8px;
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.03);
+      padding:14px;
+      background:rgba(0,0,0,0.18);
+      border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,0.12);
     }
-    .proj h3{ margin:0 0 6px 0; font-size:14px; color:var(--accent); }
-    .proj p{ margin:0; color:var(--muted); font-size:13.5px; line-height:1.45; }
+
+    .proj h3{
+      margin:0 0 6px 0;
+      font-size:15px;
+      font-weight:600;
+      color:var(--accent);
+    }
+    .proj p{
+      margin:0;
+      font-size:13.5px;
+      line-height:1.48;
+      color:var(--text-soft);
+    }
 
     /* sidebar */
-    .sidebar{ display:flex; flex-direction:column; gap:14px; position:sticky; top:28px; align-self:start; }
-    .cardSmall{ padding:14px; border-radius:10px; background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); color:var(--muted); }
-    .smallTitle{ font-size:13px; color:var(--accent); margin-bottom:8px; }
+    aside{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+      position:sticky;
+      top:32px;
+      align-self:start;
+    }
 
-    .tags{ display:flex; gap:8px; flex-wrap:wrap; }
-    .tag{ font-size:12px; padding:8px 10px; border-radius:999px; background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.04); color:var(--accent); }
+    .sidecard{
+      padding:16px;
+      background:rgba(0,0,0,0.18);
+      border:1px solid var(--border);
+      border-radius:var(--radius);
+      color:var(--text-soft);
+    }
 
-    .divider{
-      height:1px;
-      background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      margin:12px 0;
+    .sidecard .title{
+      font-size:14px;
+      font-weight:600;
+      color:var(--accent);
+      margin-bottom:8px;
+    }
+
+    .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+    }
+
+    .tag{
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:12px;
+      background:rgba(255,255,255,0.10);
+      border:1px solid rgba(255,255,255,0.18);
+      color:var(--text);
     }
 
     footer{
-      margin-top:20px;
-      font-size:13px;
-      color:var(--muted);
+      margin-top:26px;
       text-align:center;
+      font-size:12.5px;
+      color:var(--text-soft);
     }
 
-    /* responsive */
-    @media (max-width:1000px){
-      .grid{ grid-template-columns: 1fr; }
-      .projects{ grid-template-columns: 1fr; }
-      .avatar{ width:96px; height:96px; flex:0 0 96px; }
-      .sidebar{ position:static; top:auto; }
+    @media(max-width:900px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+      aside{position:static;}
+      .projects{grid-template-columns:1fr;}
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="sheet" role="main">
-      <header>
-        <div class="avatar" aria-hidden="true">
-          <!-- profile image (user-provided) -->
-          <img src="photo.jpg" alt="Vedant Dobwal portrait">
-        </div>
 
-        <div class="meta">
-          <h1>Vedant Dobwal</h1>
-          <div class="role">Undergraduate research student — IISER (Natural Sciences, pre-majors: Math, Physics, Chemistry)</div>
-          <div class="bio">
-            I study nonlinear dynamics, reaction–diffusion / Turing systems, and spectral analysis of JWST MIRI data. I write reproducible Python pipelines, curate Quantum Physics-1 notes, and explore geometric formulations for families of dynamic equations.
-          </div>
+    <header>
+      <div class="photo"><img src="photo.jpg" alt="photo of Vedant Dobwal"></div>
+      <div>
+        <h1>Vedant Dobwal</h1>
+        <div class="subtitle">Undergraduate researcher · IISER (Math • Physics • Chemistry)</div>
+        <div class="subtitle">nonlinear dynamics, turing systems, jwst spectroscopy, dynamic equations</div>
 
-          <nav class="topnav" aria-label="Quick links">
-            <a href="#about">about</a>
-            <a href="#research">research</a>
-            <a href="#notes">notes</a>
-            <a href="#skills">skills</a>
-            <a href="#contact">contact</a>
-            <a class="cvbtn" href="cv.pdf" target="_blank" rel="noopener">download cv</a>
-          </nav>
-        </div>
-      </header>
+        <nav class="nav">
+          <a href="#about">about</a>
+          <a href="#research">research</a>
+          <a href="#notes">notes</a>
+          <a href="#skills">skills</a>
+          <a href="#contact">contact</a>
+          <a href="cv.pdf" target="_blank" class="cv-btn">cv</a>
+        </nav>
+      </div>
+    </header>
 
-      <div class="grid">
-        <div class="left">
-          <section class="panel" id="about">
-            <h2>about</h2>
-            <p>
-              I am Vedant (joined IISER 2024). My work mixes theory, computation and observational data: from studying pattern-formation and Turing instabilities to developing pipelines for JWST MIRI spectral extraction. I prefer short, reproducible code and clear exposition.
-            </p>
-          </section>
+    <div class="grid">
 
-          <section class="panel" id="research">
-            <h2>research — active</h2>
-            <div class="projects" aria-hidden="false">
-              <div class="proj">
-                <h3>Turing & multi-morphogen dynamics</h3>
-                <p>Multi-morphogen reaction–diffusion: exploring combinatorial instabilities and richer pattern vocabularies beyond classical two-species models.</p>
-              </div>
+      <div>
 
-              <div class="proj">
-                <h3>Unified dynamic-equation framework</h3>
-                <p>Developing a geometric/mensurational formulation that encodes families of plane curves and dynamic equations sharing invariants (area, integral constraints).</p>
-              </div>
+        <section class="panel" id="about">
+          <h2>about</h2>
+          <p>I’m Vedant, a second-year undergraduate researcher at IISER. My work blends theoretical physics, nonlinear mathematics, and astrophysical data. I study multi-morphogen reaction–diffusion systems, build JWST MIRI spectral extraction tools in Python, and develop geometric formulations for families of dynamic equations.</p>
+        </section>
 
-              <div class="proj">
-                <h3>JWST MIRI spectral extraction</h3>
-                <p>Automating region selection and spectral extraction for MIRI cubes using Python (astropy / numpy / scipy) — reproducible pipelines for line identification.</p>
-              </div>
+        <section class="panel" id="research">
+          <h2>research</h2>
 
-              <div class="proj">
-                <h3>Temporal energetic behavior (theory)</h3>
-                <p>Early-stage theoretical work formalizing temporal energetic measures across dynamical systems and proposing testable constructs.</p>
-              </div>
+          <div class="projects">
+
+            <div class="proj">
+              <h3>Turing & multi-morphogen systems</h3>
+              <p>Studying combinatorial morphogen interactions and richer instability patterns beyond classical two-species reaction–diffusion theory.</p>
             </div>
-          </section>
 
-          <section class="panel" id="notes">
-            <h2>notes & teaching</h2>
-            <p>
-              Handwritten Quantum Physics-1 notes converted to digital, curated for juniors. Open-source release planned with runnable Python examples and clear exposition.
-            </p>
-          </section>
-
-          <section class="panel" id="publications">
-            <h2>selected outputs</h2>
-            <p>
-              • open-source spectral-extraction scripts (Python) for JWST MIRI<br>
-              • Quantum Physics-1 downloadable notes (PDF)<br>
-              • project preprints and structured notes (available on request)
-            </p>
-          </section>
-
-          <section class="panel" id="contact">
-            <h2>contact</h2>
-            <p style="color:var(--muted)">
-              Email: <a href="mailto:vedantdobwal@gmail.com" style="color:var(--accent); text-decoration:underline">vedantdobwal@gmail.com</a><br>
-              GitHub: <a href="https://github.com/vedantdobwal" target="_blank" rel="noopener" style="color:var(--accent)">github.com/vedantdobwal</a><br>
-              Affiliation: IISER — undergraduate research student
-            </p>
-          </section>
-        </div>
-
-        <!-- sidebar (mockup removed; design respected but not embedded) -->
-        <aside class="sidebar" aria-label="Sidebar">
-          <div class="cardSmall">
-            <div class="smallTitle">skills (accurate)</div>
-            <div class="tags" id="skills">
-              <span class="tag">Python (numpy, scipy, astropy)</span>
-              <span class="tag">JWST MIRI spectral extraction</span>
-              <span class="tag">spectroscopy & data reduction</span>
-              <span class="tag">numerical modelling (PDEs)</span>
-              <span class="tag">reaction–diffusion / Turing</span>
-              <span class="tag">mathematical modelling</span>
-              <span class="tag">LaTeX</span>
-              <span class="tag">Git / GitHub Pages</span>
-              <span class="tag">Lua (Love2D)</span>
-              <span class="tag">matplotlib / plotting</span>
+            <div class="proj">
+              <h3>Unified dynamic-equation geometry</h3>
+              <p>A single formulation representing families of curves/equations using shared mensurational invariants such as area and integral structure.</p>
             </div>
-          </div>
 
-          <div class="cardSmall">
-            <div class="smallTitle">affiliations</div>
-            <div style="color:var(--muted); font-size:14px;">
-              • IISER — undergraduate research student<br>
-              • NASA Citizen Scientist (volunteer)<br>
-              • ISA Summer School: JWST MIRI project
+            <div class="proj">
+              <h3>JWST MIRI spectral extraction</h3>
+              <p>Automating region selection & line identification from MIRI cubes using numpy, scipy, astropy, and reproducible pipelines.</p>
             </div>
+
+            <div class="proj">
+              <h3>Temporal energetic theory</h3>
+              <p>Developing early theoretical notions of temporal energetic behavior across dynamical systems and model responses.</p>
+            </div>
+
           </div>
-        </aside>
+        </section>
+
+        <section class="panel" id="notes">
+          <h2>notes</h2>
+          <p>Quantum Physics-1 notes, rewritten for conceptual clarity and junior accessibility. Structured PDF + annotated derivations + small runnable snippets.</p>
+        </section>
+
+        <section class="panel" id="contact">
+          <h2>contact</h2>
+          <p>Email: <a href="mailto:vedantdobwal@gmail.com" style="color:var(--accent); text-decoration:none;">vedantdobwal@gmail.com</a><br>
+             GitHub: <a href="https://github.com/vedantdobwal" style="color:var(--accent); text-decoration:none;">github.com/vedantdobwal</a></p>
+        </section>
+
       </div>
 
-      <div class="divider" role="separator"></div>
+      <aside>
 
-      <footer>
-        last updated: December 2025 • site: GitHub Pages • design: gradient + grain aesthetic (inspired by provided mockup)
-      </footer>
+        <div class="sidecard">
+          <div class="title">skills</div>
+          <div class="tags" id="skills">
+            <span class="tag">Python</span>
+            <span class="tag">numpy / scipy</span>
+            <span class="tag">astropy</span>
+            <span class="tag">JWST MIRI</span>
+            <span class="tag">spectral analysis</span>
+            <span class="tag">reaction–diffusion</span>
+            <span class="tag">Turing systems</span>
+            <span class="tag">numerical PDEs</span>
+            <span class="tag">LaTeX</span>
+            <span class="tag">Git</span>
+            <span class="tag">Lua (Love2D)</span>
+            <span class="tag">matplotlib</span>
+          </div>
+        </div>
+
+        <div class="sidecard">
+          <div class="title">affiliations</div>
+          IISER — Undergraduate Research Student<br>
+          NASA Citizen Scientist (volunteer)<br>
+          ISA Summer School — JWST MIRI
+        </div>
+
+      </aside>
     </div>
+
+    <footer>
+      last updated: 2025 · designed in a scientific–artistic aesthetic
+    </footer>
+
   </div>
 </body>
 </html>
