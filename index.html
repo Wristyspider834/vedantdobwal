@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Vedant Dobwal — Research</title>
@@ -215,8 +217,6 @@
     }
   </style>
 </head>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
 <body>
   <div class="wrap">
 
@@ -432,7 +432,7 @@ renderer.setClearColor(0x000000);
 container.appendChild(renderer.domElement);
 
  /* ---------- ORBIT CONTROLS ---------- */
-const controls = new THREE.OrbitControls(camera, renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
 
 controls.enableDamping = true;
 controls.dampingFactor = 0.08;
