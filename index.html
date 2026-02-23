@@ -216,6 +216,7 @@
   </style>
 </head>
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
 <body>
   <div class="wrap">
 
@@ -429,6 +430,19 @@ const renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(container.clientWidth, container.clientHeight);
 renderer.setClearColor(0x000000);
 container.appendChild(renderer.domElement);
+
+ /* ---------- ORBIT CONTROLS ---------- */
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+
+controls.rotateSpeed = 0.6;
+controls.zoomSpeed = 0.8;
+controls.panSpeed = 0.5;
+
+controls.minDistance = 40;
+controls.maxDistance = 300;    
 
 /* ---------- RESIZE ---------- */
 window.addEventListener("resize",()=>{
@@ -654,11 +668,11 @@ function animate(){
     return true;
   });
 
-  scene.rotation.y += 0.0015;
 
   label.textContent =
     "Field Mode: "+mode+"   (keys 1–0)";
 
+  controls.update();
   renderer.render(scene,camera);
   requestAnimationFrame(animate);
 }
