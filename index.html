@@ -200,6 +200,15 @@
       color:var(--text-soft);
     }
 
+    #physicsCanvas{
+  width:100%;
+  height:420px;
+  display:block;
+  border-radius:var(--radius);
+  background:rgba(0,0,0,0.15);
+  border:1px solid var(--border);
+}
+
     @media(max-width:900px){
       .grid{grid-template-columns:1fr;}
       aside{position:static;}
@@ -207,6 +216,60 @@
   </style>
 </head>
 
+  <script>
+const canvas = document.getElementById("physicsCanvas");
+const ctx = canvas.getContext("2d");
+
+function resize(){
+  canvas.width = canvas.clientWidth;
+  canvas.height = canvas.clientHeight;
+}
+resize();
+window.addEventListener("resize", resize);
+
+let particles = Array.from({length:70}, ()=>({
+  x: Math.random()*canvas.width,
+  y: Math.random()*canvas.height
+}));
+
+function field(x,y){
+  let cx = canvas.width/2;
+  let cy = canvas.height/2;
+  let dx = x-cx;
+  let dy = y-cy;
+
+  // simple rotational vector field
+  return {
+    vx: -dy*0.002,
+    vy: dx*0.002
+  };
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle = "rgba(255,255,255,0.6)";
+
+  particles.forEach(p=>{
+    let f = field(p.x,p.y);
+    p.x += f.vx;
+    p.y += f.vy;
+
+    if(p.x<0||p.x>canvas.width||p.y<0||p.y>canvas.height){
+      p.x=Math.random()*canvas.width;
+      p.y=Math.random()*canvas.height;
+    }
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,1.5,0,Math.PI*2);
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
+</script>
+  
 <body>
   <div class="wrap">
 
@@ -388,7 +451,7 @@ The study further utilizes asymptotic analysis to derive explicit thresholds for
 
       </div>
 
-      <aside></aside>
+      <aside><canvas id="physicsCanvas"></canvas></aside>
 
     </div>
 
