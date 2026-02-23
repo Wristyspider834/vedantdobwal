@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
   <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/examples/js/controls/OrbitControls.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Vedant Dobwal — Research</title>
@@ -431,19 +430,6 @@ renderer.setSize(container.clientWidth, container.clientHeight);
 renderer.setClearColor(0x000000);
 container.appendChild(renderer.domElement);
 
- /* ---------- ORBIT CONTROLS ---------- */
-const controls = new OrbitControls(camera, renderer.domElement);
-
-controls.enableDamping = true;
-controls.dampingFactor = 0.08;
-
-controls.rotateSpeed = 0.6;
-controls.zoomSpeed = 0.8;
-controls.panSpeed = 0.5;
-
-controls.minDistance = 40;
-controls.maxDistance = 300;    
-
 /* ---------- RESIZE ---------- */
 window.addEventListener("resize",()=>{
   renderer.setSize(container.clientWidth, container.clientHeight);
@@ -671,8 +657,7 @@ function animate(){
 
   label.textContent =
     "Field Mode: "+mode+"   (keys 1–0)";
-
-  controls.update();
+  scene.rotation.y += 0.002;
   renderer.render(scene,camera);
   requestAnimationFrame(animate);
 }
