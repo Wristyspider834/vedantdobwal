@@ -201,13 +201,14 @@
     }
 
     #physicsCanvas{
-  width:100%;
-  height:420px;
-  display:block;
-  border-radius:var(--radius);
-  background:rgba(0,0,0,0.15);
-  border:1px solid var(--border);
-}
+      width:100%;
+      height:520px;
+      display:block;
+      border-radius:var(--radius);
+      background:rgba(0,0,0,0.25);
+      border:1px solid var(--border);
+      box-shadow:0 0 25px rgba(255,120,80,0.25);
+    }
 
     @media(max-width:900px){
       .grid{grid-template-columns:1fr;}
@@ -227,46 +228,75 @@ function resize(){
 resize();
 window.addEventListener("resize", resize);
 
-let particles = Array.from({length:70}, ()=>({
-  x: Math.random()*canvas.width,
-  y: Math.random()*canvas.height
+let mouse = {x:null,y:null};
+
+canvas.addEventListener("mousemove", e=>{
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = e.clientX - rect.left;
+  mouse.y = e.clientY - rect.top;
+});
+
+canvas.addEventListener("mouseleave", ()=>{
+  mouse.x = null;
+  mouse.y = null;
+});
+
+const center = () => ({
+  x: canvas.width/2,
+  y: canvas.height/2
+});
+
+let particles = Array.from({length:120},()=>({
+  angle: Math.random()*Math.PI*2,
+  radius: Math.random()*220 + 20,
+  speed: 0.001 + Math.random()*0.003,
+  size: Math.random()*2+1
 }));
 
-function field(x,y){
-  let cx = canvas.width/2;
-  let cy = canvas.height/2;
-  let dx = x-cx;
-  let dy = y-cy;
-
-  // simple rotational vector field
-  return {
-    vx: -dy*0.002,
-    vy: dx*0.002
-  };
-}
-
 function animate(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = "rgba(0,0,0,0.15)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  ctx.fillStyle = "rgba(255,255,255,0.6)";
+  const c = center();
 
   particles.forEach(p=>{
-    let f = field(p.x,p.y);
-    p.x += f.vx;
-    p.y += f.vy;
 
-    if(p.x<0||p.x>canvas.width||p.y<0||p.y>canvas.height){
-      p.x=Math.random()*canvas.width;
-      p.y=Math.random()*canvas.height;
+    // black-hole swirl
+    p.angle += p.speed;
+    p.radius *= 0.9995;
+
+    // respawn
+    if(p.radius < 10){
+      p.radius = Math.random()*220 + 50;
+      p.angle = Math.random()*Math.PI*2;
     }
 
+    let x = c.x + Math.cos(p.angle)*p.radius;
+    let y = c.y + Math.sin(p.angle)*p.radius;
+
+    // mouse interaction (gravity pull)
+    if(mouse.x!==null){
+      let dx = mouse.x - x;
+      let dy = mouse.y - y;
+      let dist = Math.sqrt(dx*dx+dy*dy);
+      if(dist < 120){
+        x += dx*0.02;
+        y += dy*0.02;
+      }
+    }
+
+    // neon glow
     ctx.beginPath();
-    ctx.arc(p.x,p.y,1.5,0,Math.PI*2);
+    ctx.fillStyle = "rgba(255,180,120,0.9)";
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = "rgba(255,140,80,0.9)";
+    ctx.arc(x,y,p.size,0,Math.PI*2);
     ctx.fill();
   });
 
   requestAnimationFrame(animate);
 }
+
 animate();
 </script>
   
