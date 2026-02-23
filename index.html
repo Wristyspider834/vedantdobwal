@@ -418,158 +418,142 @@ function resize(){
 resize();
 window.addEventListener("resize", resize);
 
-/* ---------- SIMULATION PARAMETERS ---------- */
-const DT = 1;                 // timestep
-const PARTICLE_COUNT = 40;
-const GLOW = true;
+/* ---------- SETTINGS ---------- */
+const N = 60;
+const G = 0.08;
+const SOFT = 30;
+const TRAIL_ALPHA = 0.08;
 
-/* ---------- PARTICLE TYPES ---------- */
-const TYPES = [
-  {name:"A", color:"rgba(255,180,120,0.9)", mass:2.4},
-  {name:"B", color:"rgba(120,200,255,0.9)", mass:2},
-  {name:"C", color:"rgba(180,255,160,0.9)", mass:0.7}
-];
+let mouse = {x:null,y:null};
 
-/* ---------- CREATE PARTICLES ---------- */
+/* ---------- PARTICLES ---------- */
 let particles = [];
 
-for(let i=0;i<PARTICLE_COUNT;i++){
-  let t = TYPES[Math.floor(Math.random()*TYPES.length)];
+function randomType(){
+  const types = [
+    {name:"α", color:"#ffb070", mass:1},
+    {name:"β", color:"#7fd8ff", mass:2},
+    {name:"γ", color:"#b8ff9a", mass:0.6}
+  ];
+  return types[Math.floor(Math.random()*types.length)];
+}
+
+for(let i=0;i<N;i++){
+  let t = randomType();
   particles.push({
-    x: Math.random()*canvas.width,
-    y: Math.random()*canvas.height,
-    vx: (Math.random()-0.5)*2,
-    vy: (Math.random()-0.5)*2,
-    r: 5 + Math.random()*4,
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    vx:(Math.random()-0.5)*0.8,
+    vy:(Math.random()-0.5)*0.8,
+    r:2+Math.random()*2,
     type:t,
     id:i
   });
 }
 
-/* ---------- COLLISION ---------- */
-function resolveCollision(a,b){
-  let dx = b.x-a.x;
-  let dy = b.y-a.y;
-  let dist = Math.hypot(dx,dy);
-  let minDist = a.r+b.r;
-
-  if(dist < minDist && dist>0){
-
-    // normal vector
-    let nx = dx/dist;
-    let ny = dy/dist;
-
-    // relative velocity
-    let dvx = a.vx-b.vx;
-    let dvy = a.vy-b.vy;
-    let relVel = dvx*nx + dvy*ny;
-
-    if(relVel > 0) return;
-
-    let m1 = a.type.mass;
-    let m2 = b.type.mass;
-
-    let impulse = (2*relVel)/(m1+m2);
-
-    a.vx -= impulse*m2*nx;
-    a.vy -= impulse*m2*ny;
-    b.vx += impulse*m1*nx;
-    b.vy += impulse*m1*ny;
-
-    // separation correction
-    let overlap = minDist-dist;
-    a.x -= nx*overlap/2;
-    a.y -= ny*overlap/2;
-    b.x += nx*overlap/2;
-    b.y += ny*overlap/2;
-  }
-}
+/* ---------- MOUSE BLACK HOLE ---------- */
+canvas.addEventListener("mousemove",e=>{
+  const r=canvas.getBoundingClientRect();
+  mouse.x=e.clientX-r.left;
+  mouse.y=e.clientY-r.top;
+});
+canvas.addEventListener("mouseleave",()=>{
+  mouse.x=null;
+  mouse.y=null;
+});
 
 /* ---------- DISTANCE TRACKING ---------- */
-function findClosestPair(){
-  let minD = Infinity;
-  let pair = null;
-
+function closestPair(){
+  let min=Infinity,pair=null;
   for(let i=0;i<particles.length;i++){
     for(let j=i+1;j<particles.length;j++){
-      let dx = particles[i].x - particles[j].x;
-      let dy = particles[i].y - particles[j].y;
-      let d = Math.hypot(dx,dy);
-
-      if(d < minD){
-        minD = d;
-        pair = [particles[i],particles[j]];
-      }
+      let dx=particles[i].x-particles[j].x;
+      let dy=particles[i].y-particles[j].y;
+      let d=Math.hypot(dx,dy);
+      if(d<min){min=d;pair=[particles[i],particles[j]];}
     }
   }
-  return {pair,minD};
+  return {pair,min};
 }
 
 /* ---------- MAIN LOOP ---------- */
 function animate(){
 
-  ctx.fillStyle = "rgba(0,0,0,0.18)";
+  // TRAILS (magic ingredient)
+  ctx.fillStyle=`rgba(0,0,0,${TRAIL_ALPHA})`;
   ctx.fillRect(0,0,canvas.width,canvas.height);
 
-  // physics update
-  for(let p of particles){
-
-    p.x += p.vx*DT;
-    p.y += p.vy*DT;
-
-    // wall bounce
-    if(p.x<p.r || p.x>canvas.width-p.r) p.vx *= -1;
-    if(p.y<p.r || p.y>canvas.height-p.r) p.vy *= -1;
-  }
-
-  // collisions
+  // FORCE UPDATE
   for(let i=0;i<particles.length;i++){
-    for(let j=i+1;j<particles.length;j++){
-      resolveCollision(particles[i],particles[j]);
+    let a=particles[i];
+
+    for(let j=0;j<particles.length;j++){
+      if(i===j) continue;
+
+      let b=particles[j];
+      let dx=b.x-a.x;
+      let dy=b.y-a.y;
+      let d=Math.hypot(dx,dy)+SOFT;
+
+      let force=G*b.type.mass/(d*d);
+
+      a.vx += force*dx;
+      a.vy += force*dy;
     }
+
+    // mouse gravity
+    if(mouse.x!==null){
+      let dx=mouse.x-a.x;
+      let dy=mouse.y-a.y;
+      let d=Math.hypot(dx,dy)+50;
+      let force=0.15/(d*d);
+      a.vx += force*dx;
+      a.vy += force*dy;
+    }
+
+    // integrate
+    a.x += a.vx;
+    a.y += a.vy;
+
+    // wrap edges (space feel)
+    if(a.x<0) a.x=canvas.width;
+    if(a.x>canvas.width) a.x=0;
+    if(a.y<0) a.y=canvas.height;
+    if(a.y>canvas.height) a.y=0;
   }
 
   // closest pair
-  const {pair,minD} = findClosestPair();
-
-  // draw closest line
+  const {pair,min}=closestPair();
   if(pair){
-    ctx.strokeStyle = "rgba(255,255,255,0.35)";
+    ctx.strokeStyle="rgba(255,255,255,0.3)";
     ctx.beginPath();
     ctx.moveTo(pair[0].x,pair[0].y);
     ctx.lineTo(pair[1].x,pair[1].y);
     ctx.stroke();
 
-    ctx.fillStyle="rgba(255,255,255,0.8)";
-    ctx.font="12px Arimo";
-    ctx.fillText("d = "+minD.toFixed(1),
-      (pair[0].x+pair[1].x)/2+6,
-      (pair[0].y+pair[1].y)/2-6);
+    ctx.fillStyle="white";
+    ctx.font="11px Arimo";
+    ctx.fillText("d="+min.toFixed(1),
+      (pair[0].x+pair[1].x)/2+5,
+      (pair[0].y+pair[1].y)/2);
   }
 
-  // draw particles
+  // DRAW PARTICLES
   for(let p of particles){
 
-    if(GLOW){
-      ctx.shadowBlur = 12;
-      ctx.shadowColor = p.type.color;
-    }
+    ctx.shadowBlur=18;
+    ctx.shadowColor=p.type.color;
 
     ctx.beginPath();
-    ctx.fillStyle = p.type.color;
+    ctx.fillStyle=p.type.color;
     ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
     ctx.fill();
 
-    // labels
-    ctx.shadowBlur = 0;
-    ctx.fillStyle="rgba(255,255,255,0.9)";
-    ctx.font="11px Arimo";
-    ctx.fillText(p.type.name + p.id, p.x+7, p.y-7);
+    ctx.shadowBlur=0;
   }
 
   requestAnimationFrame(animate);
 }
-
 animate();
 </script>
 </body>
