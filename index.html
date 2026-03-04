@@ -293,7 +293,45 @@
   color:var(--accent);
   text-decoration:none;
 }
-    
+
+.explore-tab{
+
+background:linear-gradient(135deg,#ffd8a6,#ff9e4d);
+color:black;
+font-weight:600;
+padding:6px 14px;
+border-radius:20px;
+
+box-shadow:
+0 0 8px rgba(255,216,166,0.6),
+0 0 18px rgba(255,180,120,0.4);
+
+transition:all 0.25s ease;
+
+}
+
+.explore-tab:hover{
+
+transform:translateY(-1px) scale(1.05);
+
+box-shadow:
+0 0 12px rgba(255,216,166,0.9),
+0 0 28px rgba(255,170,100,0.7);
+
+}
+    @keyframes labPulse{
+
+0%{box-shadow:0 0 6px rgba(255,216,166,0.5);}
+50%{box-shadow:0 0 18px rgba(255,216,166,0.9);}
+100%{box-shadow:0 0 6px rgba(255,216,166,0.5);}
+
+}
+
+.explore-tab{
+
+animation:labPulse 3s infinite;
+
+}
 
     @media(max-width:900px){
       .grid{grid-template-columns:1fr;}
@@ -319,7 +357,7 @@
           <a href="#affiliations">affiliations</a>
           <a href="#mentions">considerations</a>
           <a href="#contact">contact</a>
-          <a href="explore.html">exploratory corner</a>
+          <a href="explore.html" class="explore-tab">exploratory corner</a>
           <a href="cv.pdf" target="_blank" class="cv-btn">cv</a>
         </nav>
       </div>
