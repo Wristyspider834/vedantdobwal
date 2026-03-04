@@ -362,7 +362,7 @@ Explore particle motion under custom equations.
 
 <label>Function Plot</label>
 
-<input id="func" placeholder="sin(x)*exp(-0.1*x)">
+<input id="func" placeholder="Examples: sin(x), x^2, exp(-x)">
 
 <button onclick="plotFunction()">Plot</button>
 
@@ -463,6 +463,15 @@ document.getElementById("vote-result").innerText=
 function plotFunction(){
 
 let expr = document.getElementById("func").value
+
+expr = expr
+.replaceAll("^","**")
+.replaceAll("sin","Math.sin")
+.replaceAll("cos","Math.cos")
+.replaceAll("tan","Math.tan")
+.replaceAll("exp","Math.exp")
+.replaceAll("sqrt","Math.sqrt")
+.replaceAll("log","Math.log")
 
 let canvas = document.getElementById("graph")
 let ctx = canvas.getContext("2d")
