@@ -36,6 +36,54 @@ h1{
 color:#ffd8a6;
 }
 
+.lab-header{
+background:linear-gradient(120deg,#111,#050505);
+border:1px solid rgba(255,255,255,0.15);
+padding:25px;
+border-radius:14px;
+margin-bottom:25px;
+}
+
+.lab-title{
+font-size:22px;
+font-weight:600;
+color:#ffd8a6;
+margin-bottom:8px;
+}
+
+.lab-meta{
+opacity:0.75;
+margin-bottom:12px;
+}
+
+.lab-tags{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+}
+
+.tag{
+background:rgba(255,216,166,0.12);
+border:1px solid rgba(255,216,166,0.3);
+padding:4px 10px;
+border-radius:20px;
+font-size:12px;
+}
+
+/* layout */
+
+.lab-grid{
+display:grid;
+grid-template-columns:2fr 1fr;
+gap:24px;
+}
+
+.lab-side{
+position:sticky;
+top:30px;
+align-self:start;
+}
+        
 h2{
 color:#ffd8a6;
 }
@@ -123,14 +171,33 @@ Ideas may begin informally but should move toward clarity and rigor through disc
 </div>
 
 
-<div class="panel">
+<div class="lab-header">
 
-<div class="problem-title">
+<div class="lab-title">
+Open Problem #001 — Electrodynamic Interaction with Tuned Inductive Conductors
+</div>
 
-Open Problem #001  
-Electrodynamic Interaction with Tuned Inductive Conductors
+<div class="lab-meta">
+Field: Electrodynamics · Plasma Physics · Nonlinear Systems
+</div>
+
+<div class="lab-tags">
+
+<span class="tag">MHD</span>
+<span class="tag">Inductive circuits</span>
+<span class="tag">Radiation pressure</span>
+<span class="tag">Particle dynamics</span>
 
 </div>
+
+</div>
+
+
+<div class="lab-grid">
+
+<div class="lab-main">
+
+<div class="panel">
 
 <p>
 
@@ -192,13 +259,10 @@ Determine the effective area \(A\) associated with the impulsive interaction.
 
 </p>
 
-</div>
-
 <div style="text-align:center;margin-top:20px;margin-bottom:20px;">
 
 <a href="edrs_setup.png" target="_blank">
         <img src="edrs_setup.png" 
-     alt="Experimental Setup"
      style="max-width:500px;width:100%;border-radius:10px;opacity:0.9;">
 </a>
 
@@ -207,7 +271,7 @@ Experimental configuration of the inductive conductor system.
 </p>
 
 </div>
-
+</div>
 
 <div class="panel">
 
@@ -294,7 +358,7 @@ Discuss ideas, approaches, or insights below.
 
 <h2>Archive</h2>
 
-<div class="archive-item">NA</div>
+<div class="archive-item">Problem #001 — Inductive Interaction</div>
 
 </div>
 
