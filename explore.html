@@ -157,10 +157,32 @@ color:white;
 border-radius:6px;
 }
 
+.sandbox-controls{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:20px;
+margin-bottom:15px;
+}
+
+.sandbox-controls input{
+margin-top:6px;
+margin-bottom:6px;
+}
+
+#graph{
+width:100%;
+height:200px;
+background:black;
+border:1px solid rgba(255,255,255,0.2);
+border-radius:10px;
+margin-bottom:15px;
+}
+        
 .archive-item{
 opacity:0.85;
 margin-bottom:6px;
 }
+
 
 </style>
 
@@ -316,9 +338,36 @@ Experimental configuration of the inductive conductor system.
 <h2>Interactive Physics Sandbox</h2>
 
 <p>
-Explore particle motion under different fields.  
-Drag to rotate, scroll to zoom.
+Explore particle motion under custom equations.
 </p>
+
+<div class="sandbox-controls">
+
+<div>
+
+<label>Field Equation</label>
+
+<input id="fx" placeholder="Fx = -y">
+<input id="fy" placeholder="Fy = x">
+<input id="fz" placeholder="Fz = 0">
+
+<button onclick="updateField()">Apply Field</button>
+
+</div>
+
+<div>
+
+<label>Function Plot</label>
+
+<input id="func" placeholder="sin(x)*exp(-0.1*x)">
+
+<button onclick="plotFunction()">Plot</button>
+
+</div>
+
+</div>
+
+<canvas id="graph"></canvas>
 
 <div id="sandbox3d"></div>
 
@@ -408,7 +457,43 @@ document.getElementById("vote-result").innerText=
 
 </script>
 <script>
+function plotFunction(){
 
+let expr = document.getElementById("func").value
+
+let canvas = document.getElementById("graph")
+let ctx = canvas.getContext("2d")
+
+canvas.width = canvas.clientWidth
+canvas.height = canvas.clientHeight
+
+ctx.clearRect(0,0,canvas.width,canvas.height)
+
+ctx.strokeStyle="#ffd8a6"
+ctx.beginPath()
+
+for(let px=0; px<canvas.width; px++){
+
+let x = (px/canvas.width)*20 - 10
+
+let y
+
+try{
+y = eval(expr.replace(/x/g,x))
+}catch{
+y = 0
+}
+
+let py = canvas.height/2 - y*20
+
+if(px===0) ctx.moveTo(px,py)
+else ctx.lineTo(px,py)
+
+}
+
+ctx.stroke()
+
+}
 /* ============================
    Exploratory Physics Sandbox
 ============================ */
@@ -469,7 +554,31 @@ particles.push(p);
 
 /* field mode */
 
-let fieldMode = 1;
+let field = {
+fx:(x,y,z)=>-y,
+fy:(x,y,z)=>x,
+fz:(x,y,z)=>0
+}
+
+function updateField(){
+
+let fx = document.getElementById("fx").value
+let fy = document.getElementById("fy").value
+let fz = document.getElementById("fz").value
+
+try{
+
+field.fx = new Function("x","y","z","return "+fx)
+field.fy = new Function("x","y","z","return "+fy)
+field.fz = new Function("x","y","z","return "+fz)
+
+}catch{
+
+alert("Invalid equation")
+
+}
+
+}
 
 window.addEventListener("keydown",(e)=>{
 
@@ -517,8 +626,15 @@ function animate(){
 
 particles.forEach(p=>{
 
-const force = fieldForce(p);
+const force = new THREE.Vector3(
 
+field.fx(p.position.x,p.position.y,p.position.z),
+
+field.fy(p.position.x,p.position.y,p.position.z),
+
+field.fz(p.position.x,p.position.y,p.position.z)
+
+).multiplyScalar(0.01)
 p.velocity.add(force);
 
 p.position.add(p.velocity);
