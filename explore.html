@@ -1,1 +1,306 @@
+<!doctype html>
+<html lang="en">
 
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Exploratory Corner — Vedant Dobwal</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;600&display=swap" rel="stylesheet">
+
+<!-- MathJax -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<!-- MathLive -->
+<script src="https://unpkg.com/mathlive"></script>
+
+<style>
+
+body{
+margin:0;
+font-family:'Arimo',sans-serif;
+background:black;
+color:white;
+padding:40px;
+}
+
+.container{
+max-width:1000px;
+margin:auto;
+}
+
+h1{
+color:#ffd8a6;
+}
+
+h2{
+color:#ffd8a6;
+}
+
+.panel{
+background:rgba(255,255,255,0.05);
+padding:22px;
+margin-bottom:22px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,0.1);
+}
+
+.problem-title{
+font-size:20px;
+margin-bottom:10px;
+color:#ffd8a6;
+}
+
+textarea,input{
+width:100%;
+padding:10px;
+margin-top:10px;
+background:black;
+border:1px solid #555;
+color:white;
+border-radius:6px;
+}
+
+textarea{
+min-height:120px;
+}
+
+button{
+margin-top:12px;
+padding:10px 18px;
+background:#ffd8a6;
+border:none;
+border-radius:8px;
+cursor:pointer;
+font-weight:600;
+}
+
+.vote-panel button{
+margin-right:8px;
+}
+
+math-field{
+width:100%;
+font-size:20px;
+padding:10px;
+border:1px solid #444;
+background:black;
+color:white;
+border-radius:6px;
+}
+
+.archive-item{
+opacity:0.85;
+margin-bottom:6px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Exploratory Lab</h1>
+
+<div class="panel">
+
+<h2>Philosophy</h2>
+
+<p>
+
+This space explores open questions in physics and mathematics.  
+Curiosity, intuition, and unconventional approaches are welcome.  
+
+Ideas may begin informally but should move toward clarity and rigor through discussion.
+
+</p>
+
+</div>
+
+
+<div class="panel">
+
+<div class="problem-title">
+
+Open Problem #001  
+Electrodynamic Interaction with Tuned Inductive Conductors
+
+</div>
+
+<p>
+
+At an experiment conducted at the facility  
+<b>EDRS-IC (ElectroDynamics Research Sweden–India Coalition)</b>:
+
+</p>
+
+<p>
+
+A deuteron moves with constant velocity
+
+$$
+v = 7.2 \times 10^{6} \; km/h
+$$
+
+through four conductors separated by distance \(d\).
+
+</p>
+
+<p>
+
+The deuteron experiences a resistive electromagnetic force while travelling through the conductors.  
+Each conductor is placed at
+
+$$
+d = 10a
+$$
+
+where \(a\) is the characteristic interaction length.
+
+</p>
+
+<p>
+
+Given inductances
+
+$$
+L_A = 0.44H,\;
+L_B = 0.88H,\;
+L_C = 0.176H,\;
+L_D = 0.36H
+$$
+
+</p>
+
+<p>
+
+The circuits are tuned so that the magnetic energy stored in each inductor  
+at the moment the particle crosses the center is equal.
+
+</p>
+
+<p>
+
+The particle eventually strikes a perfectly reflecting mirror and rebounds.
+
+Determine the effective area \(A\) associated with the impulsive interaction.
+
+</p>
+
+</div>
+
+
+<div class="panel">
+
+<h2>Exploration Workspace</h2>
+
+<p>Write reasoning, equations, or ideas.</p>
+
+<textarea placeholder="Start exploring the problem..."></textarea>
+
+</div>
+
+
+<div class="panel">
+
+<h2>Live Math Editor</h2>
+
+<p>Type LaTeX here to test ideas:</p>
+
+<math-field id="mathinput"></math-field>
+
+</div>
+
+
+<div class="panel vote-panel">
+
+<h2>Community Insight</h2>
+
+<p>How promising is this direction?</p>
+
+<button onclick="vote('promising')">Promising</button>
+<button onclick="vote('interesting')">Interesting</button>
+<button onclick="vote('needswork')">Needs refinement</button>
+
+<p id="vote-result"></p>
+
+</div>
+
+
+<div class="panel">
+
+<h2>Discussion Thread</h2>
+
+<p>
+Discuss ideas, approaches, or insights below.
+</p>
+
+<!-- Giscus discussion -->
+<script src="https://giscus.app/client.js"
+        data-repo="Wristyspider834/vedantdobwal"
+        data-repo-id="REPLACE_THIS"
+        data-category="General"
+        data-category-id="REPLACE_THIS"
+        data-mapping="pathname"
+        data-reactions-enabled="1"
+        data-emit-metadata="0"
+        data-theme="dark"
+        crossorigin="anonymous"
+        async>
+</script>
+
+</div>
+
+
+<div class="panel">
+
+<h2>Send Idea Directly to Vedant</h2>
+
+<form action="https://formspree.io/f/xnjbebgg" method="POST">
+
+<input name="name" placeholder="Your name">
+
+<input name="email" placeholder="Email">
+
+<textarea name="idea" placeholder="Describe your idea or intuition..."></textarea>
+
+<button type="submit">Send Message</button>
+
+</form>
+
+</div>
+
+
+<div class="panel">
+
+<h2>Archive</h2>
+
+<div class="archive-item">March 2026 — Circulation functional and limit cycles</div>
+
+<div class="archive-item">February 2026 — Morphogen interaction combinatorics</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+function vote(type){
+
+localStorage.setItem("vedantlab_vote",type)
+
+document.getElementById("vote-result").innerText=
+"Your vote: "+type
+
+}
+
+</script>
+
+</body>
+
+</html>
