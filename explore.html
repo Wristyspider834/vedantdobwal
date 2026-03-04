@@ -11,6 +11,9 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;600&display=swap" rel="stylesheet">
 
+<script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+        
 <!-- MathJax -->
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
@@ -124,6 +127,15 @@ border:none;
 border-radius:8px;
 cursor:pointer;
 font-weight:600;
+}
+
+#sandbox3d{
+width:100%;
+height:420px;
+background:black;
+border-radius:12px;
+border:1px solid rgba(255,255,255,0.15);
+margin-top:10px;
 }
 
 .vote-panel button{
@@ -294,6 +306,19 @@ Experimental configuration of the inductive conductor system.
 
 </div>
 
+<div class="panel">
+
+<h2>Interactive Physics Sandbox</h2>
+
+<p>
+Explore particle motion under different fields.  
+Drag to rotate, scroll to zoom.
+</p>
+
+<div id="sandbox3d"></div>
+
+</div>
+
 
 <div class="panel vote-panel">
 
@@ -375,6 +400,143 @@ document.getElementById("vote-result").innerText=
 "Your vote: "+type
 
 }
+
+</script>
+<script>
+
+/* ============================
+   Exploratory Physics Sandbox
+============================ */
+
+const container = document.getElementById("sandbox3d");
+
+const scene = new THREE.Scene();
+
+const camera = new THREE.PerspectiveCamera(
+60,
+container.clientWidth/container.clientHeight,
+0.1,
+2000
+);
+
+camera.position.set(0,30,120);
+
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(container.clientWidth,container.clientHeight);
+renderer.setClearColor(0x000000);
+
+container.appendChild(renderer.domElement);
+
+/* controls */
+
+const controls = new THREE.OrbitControls(camera,renderer.domElement);
+controls.enableDamping = true;
+
+/* axes */
+
+const axes = new THREE.AxesHelper(40);
+scene.add(axes);
+
+/* particles */
+
+let particles = [];
+
+function spawnParticle(){
+
+const geo = new THREE.SphereGeometry(0.6,8,8);
+const mat = new THREE.MeshBasicMaterial({color:0xffcc66});
+
+const p = new THREE.Mesh(geo,mat);
+
+p.position.set(0,0,0);
+
+p.velocity = new THREE.Vector3(
+(Math.random()-0.5)*2,
+(Math.random()-0.5)*2,
+(Math.random()-0.5)*2
+);
+
+scene.add(p);
+
+particles.push(p);
+
+}
+
+/* field mode */
+
+let fieldMode = 1;
+
+window.addEventListener("keydown",(e)=>{
+
+if(e.key>="1" && e.key<="3"){
+fieldMode = parseInt(e.key)
+}
+
+});
+
+/* field equations */
+
+function fieldForce(p){
+
+let r = p.position.length()+0.01;
+
+switch(fieldMode){
+
+case 1:
+
+return new THREE.Vector3(
+-p.position.z,
+0,
+p.position.x
+).multiplyScalar(0.01);
+
+case 2:
+
+return p.position.clone().multiplyScalar(-0.02/r);
+
+case 3:
+
+return new THREE.Vector3(
+Math.sin(p.position.y),
+Math.cos(p.position.z),
+Math.sin(p.position.x)
+).multiplyScalar(0.02);
+
+}
+
+}
+
+/* animation */
+
+function animate(){
+
+particles.forEach(p=>{
+
+const force = fieldForce(p);
+
+p.velocity.add(force);
+
+p.position.add(p.velocity);
+
+});
+
+controls.update();
+
+renderer.render(scene,camera);
+
+requestAnimationFrame(animate);
+
+}
+
+/* spawn events */
+
+setInterval(()=>{
+
+spawnParticle()
+
+},900);
+
+animate();
 
 </script>
 
