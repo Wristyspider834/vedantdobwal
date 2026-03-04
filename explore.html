@@ -472,22 +472,82 @@ canvas.height = canvas.clientHeight
 
 ctx.clearRect(0,0,canvas.width,canvas.height)
 
+/* coordinate system */
+
+let xMin = -10
+let xMax = 10
+let yMin = -10
+let yMax = 10
+
+let xScale = canvas.width/(xMax-xMin)
+let yScale = canvas.height/(yMax-yMin)
+
+/* draw grid */
+
+ctx.strokeStyle = "rgba(255,255,255,0.08)"
+ctx.lineWidth = 1
+
+for(let x=Math.ceil(xMin); x<=xMax; x++){
+
+let px = (x-xMin)*xScale
+
+ctx.beginPath()
+ctx.moveTo(px,0)
+ctx.lineTo(px,canvas.height)
+ctx.stroke()
+
+}
+
+for(let y=Math.ceil(yMin); y<=yMax; y++){
+
+let py = canvas.height-(y-yMin)*yScale
+
+ctx.beginPath()
+ctx.moveTo(0,py)
+ctx.lineTo(canvas.width,py)
+ctx.stroke()
+
+}
+
+/* axes */
+
+ctx.strokeStyle = "rgba(255,255,255,0.5)"
+ctx.lineWidth = 2
+
+let xAxis = canvas.height-(0-yMin)*yScale
+let yAxis = (0-xMin)*xScale
+
+ctx.beginPath()
+ctx.moveTo(0,xAxis)
+ctx.lineTo(canvas.width,xAxis)
+ctx.stroke()
+
+ctx.beginPath()
+ctx.moveTo(yAxis,0)
+ctx.lineTo(yAxis,canvas.height)
+ctx.stroke()
+
+/* plot function */
+
 ctx.strokeStyle="#ffd8a6"
+ctx.lineWidth=2
 ctx.beginPath()
 
 for(let px=0; px<canvas.width; px++){
 
-let x = (px/canvas.width)*20 - 10
+let x = xMin + px/xScale
 
 let y
 
 try{
-y = eval(expr.replace(/x/g,x))
+y = eval(expr.replace(/x/g,"("+x+")"))
 }catch{
-y = 0
+y = NaN
 }
 
-let py = canvas.height/2 - y*20
+if(!isFinite(y)) continue
+
+let py = canvas.height - (y-yMin)*yScale
 
 if(px===0) ctx.moveTo(px,py)
 else ctx.lineTo(px,py)
