@@ -208,31 +208,72 @@
   overflow:hidden;
 }
     .wiki-panel{
-  margin-top:16px;
-  background:rgba(0,0,0,0.25);
-  border:1px solid rgba(255,255,255,0.15);
+  margin-top:18px;
+  padding:16px;
+  background:rgba(0,0,0,0.28);
+  border:1px solid rgba(255,255,255,0.14);
   border-radius:var(--radius);
-  padding:12px;
+  backdrop-filter:blur(6px);
+  box-shadow:0 0 20px rgba(0,0,0,0.4);
+}
+
+.wiki-title{
+  font-size:14px;
+  font-weight:600;
+  color:var(--accent);
+  margin-bottom:10px;
+  letter-spacing:0.3px;
+}
+
+.wiki-searchbox{
+  display:flex;
+  gap:6px;
 }
 
 #wikiSearch{
-  width:100%;
-  padding:8px;
-  border:none;
+  flex:1;
+  padding:8px 10px;
   border-radius:8px;
+  border:none;
   background:rgba(255,255,255,0.08);
   color:white;
   font-family:Arimo;
+  font-size:13px;
+}
+
+#wikiSearch:focus{
+  outline:none;
+  background:rgba(255,255,255,0.12);
 }
 
 #wikiSearch::placeholder{
-  color:rgba(255,255,255,0.5);
+  color:rgba(255,255,255,0.45);
+}
+
+#wikiBtn{
+  padding:8px 12px;
+  border:none;
+  border-radius:8px;
+  background:var(--accent);
+  color:black;
+  font-size:12px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+#wikiBtn:hover{
+  background:#ffd0a0;
 }
 
 #wikiResults{
-  margin-top:10px;
+  margin-top:12px;
   font-size:13px;
-  line-height:1.4;
+  line-height:1.45;
+  color:var(--text-soft);
+}
+
+#wikiResults strong{
+  color:white;
 }
 
 #wikiResults a{
@@ -435,9 +476,19 @@ The study further utilizes asymptotic analysis to derive explicit thresholds for
       <aside>
         <div id="physics3d"></div>
         <div class="wiki-panel">
-           <input id="wikiSearch" placeholder="Search physics / math topics..." />
-           <div id="wikiResults"></div>
-        </div>
+
+  <div class="wiki-title">
+    Knowledge Lookup
+  </div>
+
+  <div class="wiki-searchbox">
+    <input id="wikiSearch" placeholder="Search physics, mathematics, chaos theory..." />
+    <button id="wikiBtn">Search</button>
+  </div>
+
+  <div id="wikiResults"></div>
+
+</div>
       </aside>
 
     </div>
@@ -724,37 +775,44 @@ animate();
 <script> 
   const searchBox = document.getElementById("wikiSearch");
 const resultsBox = document.getElementById("wikiResults");
+const searchBtn = document.getElementById("wikiBtn");
 
-searchBox.addEventListener("keypress", function(e){
+function searchWiki(){
 
-  if(e.key === "Enter"){
+  const query = searchBox.value.trim();
 
-    const query = searchBox.value;
+  if(!query) return;
 
-    fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${query}`)
-      .then(res => res.json())
-      .then(data => {
+  resultsBox.innerHTML = "Searching...";
 
-        if(data.extract){
+  fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${query}`)
+  .then(res => res.json())
+  .then(data => {
 
-          resultsBox.innerHTML = `
-            <strong>${data.title}</strong><br><br>
-            ${data.extract.substring(0,300)}...<br><br>
-            <a href="${data.content_urls.desktop.page}" target="_blank">
-              Read full article →
-            </a>
-          `;
+    if(data.extract){
 
-        } else {
+      resultsBox.innerHTML = `
+        <strong>${data.title}</strong><br><br>
+        ${data.extract.substring(0,320)}...<br><br>
+        <a href="${data.content_urls.desktop.page}" target="_blank">
+        Open full article →
+        </a>
+      `;
 
-          resultsBox.innerHTML = "No article found.";
+    } else {
 
-        }
+      resultsBox.innerHTML = "No article found.";
 
-      });
+    }
 
-  }
+  });
 
+}
+
+searchBtn.onclick = searchWiki;
+
+searchBox.addEventListener("keypress", e=>{
+  if(e.key==="Enter") searchWiki();
 });
 </script>
   
