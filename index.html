@@ -214,7 +214,6 @@
   border:1px solid rgba(255,255,255,0.14);
   border-radius:var(--radius);
   backdrop-filter:blur(6px);
-  box-shadow:0 0 20px rgba(0,0,0,0.4);
 }
 
 .wiki-title{
@@ -222,7 +221,6 @@
   font-weight:600;
   color:var(--accent);
   margin-bottom:10px;
-  letter-spacing:0.3px;
 }
 
 .wiki-searchbox{
@@ -241,15 +239,6 @@
   font-size:13px;
 }
 
-#wikiSearch:focus{
-  outline:none;
-  background:rgba(255,255,255,0.12);
-}
-
-#wikiSearch::placeholder{
-  color:rgba(255,255,255,0.45);
-}
-
 #wikiBtn{
   padding:8px 12px;
   border:none;
@@ -257,32 +246,52 @@
   background:var(--accent);
   color:black;
   font-size:12px;
-  cursor:pointer;
   font-weight:600;
+  cursor:pointer;
 }
 
-#wikiBtn:hover{
-  background:#ffd0a0;
+#wikiSuggestions{
+  margin-top:8px;
+  font-size:12px;
+  color:var(--text-soft);
+}
+
+#wikiSuggestions div{
+  padding:4px 0;
+  cursor:pointer;
+}
+
+#wikiSuggestions div:hover{
+  color:var(--accent);
 }
 
 #wikiResults{
   margin-top:12px;
   font-size:13px;
   line-height:1.45;
-  color:var(--text-soft);
 }
 
-#wikiResults strong{
+.wiki-result{
+  margin-bottom:12px;
+  display:flex;
+  gap:10px;
+}
+
+.wiki-result img{
+  width:50px;
+  height:50px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+.wiki-result-title{
   color:white;
+  font-weight:600;
 }
 
-#wikiResults a{
+.wiki-result a{
   color:var(--accent);
   text-decoration:none;
-}
-
-#wikiResults a:hover{
-  text-decoration:underline;
 }
     
 
@@ -477,14 +486,14 @@ The study further utilizes asymptotic analysis to derive explicit thresholds for
         <div id="physics3d"></div>
         <div class="wiki-panel">
 
-  <div class="wiki-title">
-    Knowledge Lookup
-  </div>
+  <div class="wiki-title">Knowledge Lookup</div>
 
   <div class="wiki-searchbox">
-    <input id="wikiSearch" placeholder="Search physics, mathematics, chaos theory..." />
+    <input id="wikiSearch" placeholder="Search physics, math, chaos theory..." />
     <button id="wikiBtn">Search</button>
   </div>
+
+  <div id="wikiSuggestions"></div>
 
   <div id="wikiResults"></div>
 
@@ -775,43 +784,97 @@ animate();
 <script> 
   const searchBox = document.getElementById("wikiSearch");
 const resultsBox = document.getElementById("wikiResults");
+const suggestionsBox = document.getElementById("wikiSuggestions");
 const searchBtn = document.getElementById("wikiBtn");
+
+/* ---------- SEARCH FUNCTION ---------- */
 
 function searchWiki(){
 
   const query = searchBox.value.trim();
-
   if(!query) return;
 
   resultsBox.innerHTML = "Searching...";
 
-  fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${query}`)
-  .then(res => res.json())
-  .then(data => {
+  fetch(`https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${query}&utf8=&format=json&origin=*`)
+  .then(res=>res.json())
+  .then(data=>{
 
-    if(data.extract){
+    resultsBox.innerHTML="";
 
-      resultsBox.innerHTML = `
-        <strong>${data.title}</strong><br><br>
-        ${data.extract.substring(0,320)}...<br><br>
-        <a href="${data.content_urls.desktop.page}" target="_blank">
-        Open full article →
-        </a>
-      `;
+    data.query.search.slice(0,5).forEach(item=>{
 
-    } else {
+      const title = item.title;
 
-      resultsBox.innerHTML = "No article found.";
+      fetch(`https://en.wikipedia.org/api/rest_v1/page/summary/${title}`)
+      .then(r=>r.json())
+      .then(page=>{
 
-    }
+        const div=document.createElement("div");
+        div.className="wiki-result";
+
+        div.innerHTML=`
+          ${page.thumbnail ? `<img src="${page.thumbnail.source}">` : ""}
+          <div>
+            <div class="wiki-result-title">${page.title}</div>
+            ${page.extract.substring(0,140)}...<br>
+            <a href="${page.content_urls.desktop.page}" target="_blank">
+            Read article →
+            </a>
+          </div>
+        `;
+
+        resultsBox.appendChild(div);
+
+      });
+
+    });
 
   });
 
 }
 
-searchBtn.onclick = searchWiki;
+/* ---------- AUTOSUGGEST ---------- */
 
-searchBox.addEventListener("keypress", e=>{
+searchBox.addEventListener("input", ()=>{
+
+  const q = searchBox.value;
+
+  if(q.length<3){
+    suggestionsBox.innerHTML="";
+    return;
+  }
+
+  fetch(`https://en.wikipedia.org/w/api.php?action=opensearch&search=${q}&limit=5&namespace=0&format=json&origin=*`)
+  .then(res=>res.json())
+  .then(data=>{
+
+    suggestionsBox.innerHTML="";
+
+    data[1].forEach(item=>{
+
+      const div=document.createElement("div");
+      div.textContent=item;
+
+      div.onclick=()=>{
+        searchBox.value=item;
+        suggestionsBox.innerHTML="";
+        searchWiki();
+      }
+
+      suggestionsBox.appendChild(div);
+
+    });
+
+  });
+
+});
+
+/* ---------- EVENTS ---------- */
+
+searchBtn.onclick=searchWiki;
+
+searchBox.addEventListener("keypress",e=>{
   if(e.key==="Enter") searchWiki();
 });
 </script>
