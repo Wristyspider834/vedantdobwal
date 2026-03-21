@@ -157,6 +157,7 @@ Intuition is welcome — rigor is built together.
 
 <input id="func" placeholder="sin(x)">
 <button onclick="plotFunction()">Plot</button>
+<button onclick="updateField()">Apply Field</button>
 
 <canvas id="graph"></canvas>
 <div id="sandbox3d"></div>
@@ -476,12 +477,13 @@ field.fy = new Function("x","y","z",
 field.fz = new Function("x","y","z",
 "return " + (document.getElementById("fz").value || "0"));
 
-generateField(); // regenerate arrows
+generateField();
 
-particles.forEach(p => scene.remove(p));
+particles.forEach(p => {
+  scene.remove(p);
+  scene.remove(p.trailLine);
+});
 particles = [];
-
-<button onclick="updateField()">Apply Field</button>
    
 }catch{
 alert("Invalid field equations");
