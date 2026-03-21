@@ -320,7 +320,9 @@ ${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}
 <div class="panel">${p.content}</div>
 `;
 
-MathJax.typeset();
+if (window.MathJax && MathJax.typeset) {
+  MathJax.typeset();
+}
 }
 
 function renderArchive(){
@@ -476,6 +478,11 @@ field.fz = new Function("x","y","z",
 
 generateField(); // regenerate arrows
 
+particles.forEach(p => scene.remove(p));
+particles = [];
+
+<button onclick="updateField()">Apply Field</button>
+   
 }catch{
 alert("Invalid field equations");
 }
