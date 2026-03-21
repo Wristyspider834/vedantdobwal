@@ -121,6 +121,7 @@ margin-bottom:10px;
 
 <h1>Exploratory Corner</h1>
 
+<div id="problem-container" class="panel"></div>
 <div class="panel">
 <h2>Philosophy</h2>
 <p>
@@ -184,6 +185,7 @@ async>
 <!-- ARCHIVE -->
 <div class="panel">
 <h2>Archive</h2>
+<div id="archive-container"></div>
 <div id="archive-list"></div>
 </div>
 
@@ -606,6 +608,120 @@ requestAnimationFrame(animate);
 generateField();
 setInterval(spawn,700);
 animate();
+
+</script>
+
+<script>
+
+/* ============================
+   PROBLEM SYSTEM
+============================ */
+
+const problems = [
+
+{
+id:1,
+title:"Electrodynamic Interaction with Tuned Inductive Conductors",
+content:`
+<p>A deuteron moves with velocity:</p>
+
+$$ v = 7.2 \\times 10^6 \\; km/h $$
+
+<p>through four inductive conductors separated by distance \(d = 10a\).</p>
+
+<p>Inductances:</p>
+
+$$
+L_A = 0.44H,\\;
+L_B = 0.88H,\\;
+L_C = 0.176H,\\;
+L_D = 0.36H
+$$
+
+<p>The system is tuned such that magnetic energy is equal at the center.</p>
+
+<p>The particle reflects off a mirror.</p>
+
+<p><b>Find effective interaction area \(A\).</b></p>
+
+<div style="text-align:center;margin-top:15px;">
+<img src="edrs_setup.png" style="max-width:400px;border-radius:10px;">
+</div>
+`
+},
+
+{
+id:2,
+title:"Limit Cycles via Algebraic Probing",
+content:`
+<p>For polynomial planar vector fields, limit cycles correspond to:</p>
+
+$$
+P(R^2)=0, \\quad Q(R)=0
+$$
+
+<p>for a suitable class of probing curves.</p>
+
+<p><b>Investigate existence, multiplicity, and structure of solutions.</b></p>
+`
+}
+
+];
+
+let currentProblem = problems[1]; // current = second problem
+
+function renderProblem(p){
+
+document.getElementById("problem-container").innerHTML = `
+<h2>${p.title}</h2>
+<div>${p.content}</div>
+`;
+
+if(window.MathJax){
+MathJax.typeset();
+}
+
+}
+
+function renderArchive(){
+
+let html = "";
+
+problems.forEach(p=>{
+
+if(p.id !== currentProblem.id){
+
+html += `
+<div class="archive-item" 
+onclick="loadProblem(${p.id})" 
+style="cursor:pointer;">
+Problem #${p.id} — ${p.title}
+</div>
+`;
+
+}
+
+});
+
+document.getElementById("archive-container").innerHTML = html;
+
+}
+
+function loadProblem(id){
+
+let p = problems.find(x=>x.id===id);
+currentProblem = p;
+
+renderProblem(p);
+renderArchive();
+
+window.scrollTo({top:0,behavior:"smooth"});
+
+}
+
+/* INIT */
+renderProblem(currentProblem);
+renderArchive();
 
 </script>
 
