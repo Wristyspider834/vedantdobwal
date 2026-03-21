@@ -183,7 +183,6 @@ async>
 <!-- ARCHIVE -->
 <div class="panel">
 <h2>Archive</h2>
-<div id="archive-container"></div>
 <div id="archive-list"></div>
 </div>
 
@@ -329,7 +328,10 @@ if (window.MathJax && MathJax.typeset) {
 function renderArchive(){
 
 document.getElementById("archive-list").innerHTML =
-problems.slice().reverse().map(p=>`
+problems
+.filter(p => p.id !== currentProblem.id)
+.slice().reverse()
+.map(p=>`
 <div class="archive-item" onclick="loadProblem(${p.id})">
 Problem #${p.id} — ${p.title}
 </div>
@@ -338,8 +340,14 @@ Problem #${p.id} — ${p.title}
 }
 
 function loadProblem(id){
+
 let p = problems.find(x=>x.id===id);
+
+currentProblem = p;   // ⭐ THIS WAS MISSING
+
 renderProblem(p);
+renderArchive();
+
 window.scrollTo({top:0,behavior:"smooth"});
 }
 
