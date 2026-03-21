@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
 
 <meta charset="utf-8">
@@ -13,11 +12,8 @@
 
 <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-        
-<!-- MathJax -->
-<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 
-<!-- MathLive -->
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 <script src="https://unpkg.com/mathlive"></script>
 
 <style>
@@ -32,14 +28,17 @@ padding:40px;
 
 .container{
 max-width:1200px;
-margin-left:auto;
-margin-right:auto;
-padding-left:20px;
-padding-right:20px;
+margin:auto;
 }
 
-h1{
-color:#ffd8a6;
+h1{color:#ffd8a6;}
+
+.panel{
+background:rgba(255,255,255,0.05);
+padding:26px;
+margin-bottom:26px;
+border-radius:14px;
+border:1px solid rgba(255,255,255,0.1);
 }
 
 .lab-header{
@@ -50,22 +49,13 @@ border-radius:14px;
 margin-bottom:25px;
 }
 
-.lab-title{
-font-size:22px;
-font-weight:600;
-color:#ffd8a6;
-margin-bottom:8px;
-}
-
-.lab-meta{
-opacity:0.75;
-margin-bottom:12px;
-}
+.lab-title{font-size:22px;color:#ffd8a6;}
+.lab-meta{opacity:0.7;margin:8px 0;}
 
 .lab-tags{
 display:flex;
-flex-wrap:wrap;
 gap:8px;
+flex-wrap:wrap;
 }
 
 .tag{
@@ -76,38 +66,16 @@ border-radius:20px;
 font-size:12px;
 }
 
-/* layout */
-
-.lab-grid{
-display:grid;
-grid-template-columns:minmax(0,2fr) minmax(0,1fr);
-gap:28px;
-align-items:start;
+.archive-item{
+padding:8px;
+cursor:pointer;
+border-radius:6px;
+transition:0.2s;
+opacity:0.85;
 }
 
-.lab-side{
-position:sticky;
-top:30px;
-align-self:start;
-}
-        
-h2{
-color:#ffd8a6;
-}
-
-.panel{
-background:rgba(255,255,255,0.05);
-padding:26px;
-margin-bottom:26px;
-border-radius:14px;
-border:1px solid rgba(255,255,255,0.1);
-max-width:100%;
-}
-
-.problem-title{
-font-size:20px;
-margin-bottom:10px;
-color:#ffd8a6;
+.archive-item:hover{
+background:rgba(255,255,255,0.08);
 }
 
 textarea,input{
@@ -120,69 +88,28 @@ color:white;
 border-radius:6px;
 }
 
-textarea{
-min-height:120px;
-}
-
 button{
-margin-top:12px;
+margin-top:10px;
 padding:10px 18px;
 background:#ffd8a6;
 border:none;
 border-radius:8px;
 cursor:pointer;
-font-weight:600;
 }
 
 #sandbox3d{
-width:100%;
 height:420px;
-background:black;
-border-radius:12px;
 border:1px solid rgba(255,255,255,0.15);
+border-radius:10px;
 margin-top:10px;
 }
 
-.vote-panel button{
-margin-right:8px;
-}
-
-math-field{
-width:100%;
-font-size:20px;
-padding:10px;
-border:1px solid #444;
-background:black;
-color:white;
-border-radius:6px;
-}
-
-.sandbox-controls{
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
-margin-bottom:15px;
-}
-
-.sandbox-controls input{
-margin-top:6px;
-margin-bottom:6px;
-}
-
 #graph{
-width:100%;
 height:200px;
-background:black;
 border:1px solid rgba(255,255,255,0.2);
 border-radius:10px;
-margin-bottom:15px;
+margin-bottom:10px;
 }
-        
-.archive-item{
-opacity:0.85;
-margin-bottom:6px;
-}
-
 
 </style>
 
@@ -195,283 +122,214 @@ margin-bottom:6px;
 <h1>Exploratory Corner</h1>
 
 <div class="panel">
-
 <h2>Philosophy</h2>
-
 <p>
-
-This space explores open questions in physics and mathematics.  
-Curiosity, intuition, and unconventional approaches are welcome.  
-
-Ideas may begin informally but should move toward clarity and rigor through discussion.
-
+Curiosity-driven exploration of physics & mathematics.  
+Intuition is welcome — rigor is built together.
 </p>
-
 </div>
 
+<!-- DYNAMIC PROBLEM -->
+<div id="problem-container"></div>
 
-<div class="lab-header">
-
-<div class="lab-title">
-Open Problem #001 — Electrodynamic Interaction with Tuned Inductive Conductors
-</div>
-
-<div class="lab-meta">
-Field: Electrodynamics · Plasma Physics · Nonlinear Systems
-</div>
-
-<div class="lab-tags">
-
-<span class="tag">MHD</span>
-<span class="tag">Inductive circuits</span>
-<span class="tag">Radiation pressure</span>
-<span class="tag">Particle dynamics</span>
-
-</div>
-
-</div>
-
-
-<div class="lab-grid">
-
-<div class="lab-main">
-
+<!-- WORKSPACE -->
 <div class="panel">
-
-<p>
-
-At an experiment conducted at the facility  
-<b>EDRS-IC (ElectroDynamics Research Sweden–India Coalition)</b>:
-
-</p>
-
-<p>
-
-A deuteron moves with constant velocity
-
-$$
-v = 7.2 \times 10^{6} \; km/h
-$$
-
-through four conductors separated by distance \(d\).
-
-</p>
-
-<p>
-
-The deuteron experiences a resistive electromagnetic force while travelling through the conductors.  
-Each conductor is placed at
-
-$$
-d = 10a
-$$
-
-where \(a\) is the characteristic interaction length.
-
-</p>
-
-<p>
-
-Given inductances
-
-$$
-L_A = 0.44H,\;
-L_B = 0.88H,\;
-L_C = 0.176H,\;
-L_D = 0.36H
-$$
-
-</p>
-
-<p>
-
-The circuits are tuned so that the magnetic energy stored in each inductor  
-at the moment the particle crosses the center is equal.
-
-</p>
-
-<p>
-
-The particle eventually strikes a perfectly reflecting mirror and rebounds.
-
-Determine the effective area \(A\) associated with the impulsive interaction.
-
-</p>
-
-<div style="text-align:center;margin-top:20px;margin-bottom:20px;">
-
-<a href="edrs_setup.png" target="_blank">
-        <img src="edrs_setup.png" 
-     style="max-width:500px;width:100%;border-radius:10px;opacity:0.9;">
-</a>
-
-<p style="font-size:13px;opacity:0.7;margin-top:6px;">
-Experimental configuration of the inductive conductor system.
-</p>
-
-</div>
-</div>
-
-<div class="panel">
-
 <h2>Exploration Workspace</h2>
-
-<p>Write reasoning, equations, or ideas.</p>
-
-<textarea placeholder="Start exploring the problem..."></textarea>
-
+<textarea placeholder="Write your thoughts..."></textarea>
 </div>
 
-
+<!-- MATH -->
 <div class="panel">
-
 <h2>Live Math Editor</h2>
-
-<p>Type LaTeX here to test ideas:</p>
-
-<math-field id="mathinput"></math-field>
-
+<math-field></math-field>
 </div>
 
+<!-- SANDBOX -->
 <div class="panel">
 
-<h2>Interactive Physics Sandbox</h2>
-
-<p>
-Explore particle motion under custom equations.
-</p>
-
-<div class="sandbox-controls">
-
-<div>
-
-<label>Field Equation</label>
+<h2>Interactive Sandbox</h2>
 
 <input id="fx" placeholder="Fx = -y">
 <input id="fy" placeholder="Fy = x">
 <input id="fz" placeholder="Fz = 0">
 
-<label style="margin-top:8px;">Field Strength</label>
-
 <input type="range" id="strength" min="0" max="3" step="0.1" value="1">
-<button onclick="updateField()">Apply Field</button>
 
-</div>
-
-<div>
-
-<label>Function Plot</label>
-
-<input id="func" placeholder="Examples: sin(x), x^2, exp(-x)">
-
+<input id="func" placeholder="sin(x)">
 <button onclick="plotFunction()">Plot</button>
 
-</div>
-
-</div>
-
 <canvas id="graph"></canvas>
-
 <div id="sandbox3d"></div>
 
 </div>
 
-
-<div class="panel vote-panel">
-
-<h2>Community Insight</h2>
-
-<p>How promising is this direction?</p>
-
-<button onclick="vote('promising')">Promising</button>
-<button onclick="vote('interesting')">Interesting</button>
-<button onclick="vote('needswork')">Needs refinement</button>
-
-<p id="vote-result"></p>
-
-</div>
-
-
+<!-- DISCUSSION -->
 <div class="panel">
+<h2>Discussion</h2>
 
-<h2>Discussion Thread</h2>
-
-<p>
-Discuss ideas, approaches, or insights below.
-</p>
-
-<!-- Giscus discussion -->
 <script src="https://giscus.app/client.js"
-        data-repo="Wristyspider834/vedantdobwal"
-        data-repo-id="R_kgDOQi2-KA"
-        data-category="General"
-        data-category-id="DIC_kwDOQi2-KM4C3qS-"
-        data-mapping="pathname"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-theme="dark"
-        crossorigin="anonymous"
-        async>
+data-repo="Wristyspider834/vedantdobwal"
+data-repo-id="R_kgDOQi2-KA"
+data-category="General"
+data-category-id="DIC_kwDOQi2-KM4C3qS-"
+data-mapping="title"
+data-theme="dark"
+crossorigin="anonymous"
+async>
 </script>
 
 </div>
 
-
+<!-- ARCHIVE -->
 <div class="panel">
-
-<h2>Send Idea Directly to Vedant</h2>
-
-<form action="https://formspree.io/f/xnjbebgg" method="POST">
-
-<input name="name" placeholder="Your name">
-
-<input name="email" placeholder="Email">
-
-<textarea name="idea" placeholder="Describe your idea or intuition..."></textarea>
-
-<button type="submit">Send Message</button>
-
-</form>
-
-</div>
-
-
-<div class="panel">
-
 <h2>Archive</h2>
-
-<div class="archive-item">Problem #001 — Inductive Interaction</div>
-
+<div id="archive-list"></div>
 </div>
 
 </div>
 
+<!-- ============================
+   PROBLEM SYSTEM
+============================ -->
 
 <script>
 
-function vote(type){
+const problems = [
 
-localStorage.setItem("vedantlab_vote",type)
+{
+id:1,
+title:"Electrodynamic Interaction with Tuned Inductive Conductors",
+field:"Electrodynamics · Plasma Physics · Nonlinear Systems",
+tags:["MHD","Inductive circuits","Radiation pressure","Particle dynamics"],
 
-document.getElementById("vote-result").innerText=
-"Your vote: "+type
+content: `
+
+<p>
+At an experiment conducted at the facility  
+<b>EDRS-IC (ElectroDynamics Research Sweden–India Coalition)</b>:
+</p>
+
+<p>
+A deuteron moves with constant velocity
+$$
+v = 7.2 \\times 10^{6} \\, km/h
+$$
+through four conductors separated by distance \(d\).
+</p>
+
+<p>
+Each conductor is placed at
+$$
+d = 10a
+$$
+</p>
+
+<p>
+Given inductances:
+$$
+L_A = 0.44H,\\;
+L_B = 0.88H,\\;
+L_C = 0.176H,\\;
+L_D = 0.36H
+$$
+</p>
+
+<p>
+The circuits are tuned such that magnetic energy is equal at crossing.
+</p>
+
+<p>
+The particle reflects from a mirror.  
+Determine the effective area \(A\).
+</p>
+
+<div style="text-align:center;margin-top:20px;">
+
+<a href="edrs_setup.png" target="_blank">
+<img src="edrs_setup.png"
+style="max-width:500px;width:100%;border-radius:10px;opacity:0.9;">
+</a>
+
+<p style="font-size:12px;opacity:0.6;">
+Experimental configuration of the inductive conductor system.
+</p>
+
+</div>
+
+`
+},
+
+{
+id:2,
+title:"Algebraic Characterization of Limit Cycles",
+field:"Dynamical Systems",
+tags:["Limit cycles","Geometry"],
+content:`
+<p>
+$$P(R^2)=0,\\quad Q(R)=0$$
+</p>
+<p>
+Can limit cycles emerge as solutions?
+</p>
+`
+}
+
+];
+
+let currentProblem = problems[problems.length-1];
+
+function renderProblem(p){
+
+document.getElementById("problem-container").innerHTML = `
+<div class="lab-header">
+<div class="lab-title">Open Problem #${p.id} — ${p.title}</div>
+<div class="lab-meta">${p.field}</div>
+<div class="lab-tags">
+${p.tags.map(t=>`<span class="tag">${t}</span>`).join("")}
+</div>
+</div>
+
+<div class="panel">${p.content}</div>
+`;
+
+MathJax.typeset();
+}
+
+function renderArchive(){
+
+document.getElementById("archive-list").innerHTML =
+problems.slice().reverse().map(p=>`
+<div class="archive-item" onclick="loadProblem(${p.id})">
+Problem #${p.id} — ${p.title}
+</div>
+`).join("");
 
 }
 
+function loadProblem(id){
+let p = problems.find(x=>x.id===id);
+renderProblem(p);
+window.scrollTo({top:0,behavior:"smooth"});
+}
+
+renderProblem(currentProblem);
+renderArchive();
+
 </script>
+
+<!-- ============================
+   GRAPH
+============================ -->
+
 <script>
+
 function plotFunction(){
 
 let expr = document.getElementById("func").value
-
-expr = expr
 .replaceAll("^","**")
 .replaceAll("sin","Math.sin")
 .replaceAll("cos","Math.cos")
-.replaceAll("tan","Math.tan")
 .replaceAll("exp","Math.exp")
-.replaceAll("sqrt","Math.sqrt")
-.replaceAll("log","Math.log")
 
 let canvas = document.getElementById("graph")
 let ctx = canvas.getContext("2d")
@@ -481,323 +339,88 @@ canvas.height = canvas.clientHeight
 
 ctx.clearRect(0,0,canvas.width,canvas.height)
 
-/* coordinate system */
-
-let xMin = -10
-let xMax = 10
-let yMin = -10
-let yMax = 10
-
-let xScale = canvas.width/(xMax-xMin)
-let yScale = canvas.height/(yMax-yMin)
-
-/* draw grid */
-
-ctx.strokeStyle = "rgba(255,255,255,0.08)"
-ctx.lineWidth = 1
-
-for(let x=Math.ceil(xMin); x<=xMax; x++){
-
-let px = (x-xMin)*xScale
-
-ctx.beginPath()
-ctx.moveTo(px,0)
-ctx.lineTo(px,canvas.height)
-ctx.stroke()
-
-}
-
-for(let y=Math.ceil(yMin); y<=yMax; y++){
-
-let py = canvas.height-(y-yMin)*yScale
-
-ctx.beginPath()
-ctx.moveTo(0,py)
-ctx.lineTo(canvas.width,py)
-ctx.stroke()
-
-}
-
-/* axes */
-
-ctx.strokeStyle = "rgba(255,255,255,0.5)"
-ctx.lineWidth = 2
-
-let xAxis = canvas.height-(0-yMin)*yScale
-let yAxis = (0-xMin)*xScale
-
-ctx.beginPath()
-ctx.moveTo(0,xAxis)
-ctx.lineTo(canvas.width,xAxis)
-ctx.stroke()
-
-ctx.beginPath()
-ctx.moveTo(yAxis,0)
-ctx.lineTo(yAxis,canvas.height)
-ctx.stroke()
-
-/* plot function */
-
-ctx.strokeStyle="#ffd8a6"
-ctx.lineWidth=2
 ctx.beginPath()
 
-for(let px=0; px<canvas.width; px++){
+for(let px=0;px<canvas.width;px++){
 
-let x = xMin + px/xScale
+let x = (px/canvas.width)*20-10
+let y = eval(expr.replace(/x/g,x))
 
-let y
-
-try{
-y = eval(expr.replace(/x/g,"("+x+")"))
-}catch{
-y = NaN
-}
-
-if(!isFinite(y)) continue
-
-let py = canvas.height - (y-yMin)*yScale
+let py = canvas.height/2 - y*20
 
 if(px===0) ctx.moveTo(px,py)
 else ctx.lineTo(px,py)
-
 }
 
+ctx.strokeStyle="#ffd8a6"
 ctx.stroke()
 
 }
-/* ============================
-   Exploratory Physics Sandbox
-============================ */
+
+</script>
+
+<!-- ============================
+   3D SANDBOX
+============================ -->
+
+<script>
 
 const container = document.getElementById("sandbox3d");
 
 const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(60,1,0.1,1000);
+camera.position.set(0,30,100);
 
-const camera = new THREE.PerspectiveCamera(
-60,
-container.clientWidth/container.clientHeight,
-0.1,
-2000
-);
-
-camera.position.set(0,30,120);
-
-const renderer = new THREE.WebGLRenderer({antialias:true});
+const renderer = new THREE.WebGLRenderer();
 renderer.setSize(container.clientWidth,container.clientHeight);
-renderer.setClearColor(0x000000);
-
 container.appendChild(renderer.domElement);
 
-/* controls */
-
 const controls = new THREE.OrbitControls(camera,renderer.domElement);
-controls.enableDamping = true;
 
-/* axes */
-
-const axes = new THREE.AxesHelper(40);
-scene.add(axes);
-
-/* particles */
-
-let fieldArrows = [];
 let particles = [];
 let fieldStrength = 1;
 
-document.getElementById("strength").oninput = function(){
-fieldStrength = parseFloat(this.value)
-}
+document.getElementById("strength").oninput = e=>{
+fieldStrength = e.target.value;
+};
 
-function generateField(){
+function spawn(){
 
-fieldArrows.forEach(a => scene.remove(a))
-fieldArrows = []
-
-const step = 10
-
-for(let x=-40;x<=40;x+=step){
-for(let y=-40;y<=40;y+=step){
-for(let z=-40;z<=40;z+=step){
-
-let fx = field.fx(x,y,z)
-let fy = field.fy(x,y,z)
-let fz = field.fz(x,y,z)
-
-let dir = new THREE.Vector3(fx,fy,fz)
-
-if(dir.length()===0) continue
-
-dir.normalize()
-
-let arrow = new THREE.ArrowHelper(
-dir,
-new THREE.Vector3(x,y,z),
-4,
-0x66ccff
-)
-
-scene.add(arrow)
-fieldArrows.push(arrow)
-
-}
-}
-}
-
-}
-function spawnParticle(){
-
-const geo = new THREE.SphereGeometry(0.6,8,8);
-const mat = new THREE.MeshBasicMaterial({color:0xffcc66});
-
-const p = new THREE.Mesh(geo,mat);
-
-p.position.set(0,0,0);
+let geo = new THREE.SphereGeometry(0.5);
+let mat = new THREE.MeshBasicMaterial({color:0xffcc66});
+let p = new THREE.Mesh(geo,mat);
 
 p.velocity = new THREE.Vector3(
-(Math.random()-0.5)*2,
-(Math.random()-0.5)*2,
-(Math.random()-0.5)*2
+Math.random()-0.5,
+Math.random()-0.5,
+Math.random()-0.5
 );
 
-/* trails */
-
-p.trail = []
-
-p.trailLine = new THREE.Line(
-new THREE.BufferGeometry(),
-new THREE.LineBasicMaterial({color:0xffcc66})
-)
-
-scene.add(p.trailLine)
-
 scene.add(p);
-
 particles.push(p);
-
 }
-
-/* field mode */
-
-let field = {
-fx:(x,y,z)=>-y,
-fy:(x,y,z)=>x,
-fz:(x,y,z)=>0
-}
-
-function updateField(){
-
-let fx = document.getElementById("fx").value
-let fy = document.getElementById("fy").value
-let fz = document.getElementById("fz").value
-
-try{
-
-field.fx = new Function("x","y","z","return "+fx)
-field.fy = new Function("x","y","z","return "+fy)
-field.fz = new Function("x","y","z","return "+fz)
-
-}catch{
-
-alert("Invalid equation")
-
-}
-
-}
-
-window.addEventListener("keydown",(e)=>{
-
-let fieldMode = 1
-if(e.key>="1" && e.key<="3"){
-fieldMode = parseInt(e.key)
-}
-
-});
-
-generateField()
-
-/* field equations */
-
-function fieldForce(p){
-
-let r = p.position.length()+0.01;
-
-switch(fieldMode){
-
-case 1:
-
-return new THREE.Vector3(
--p.position.z,
-0,
-p.position.x
-).multiplyScalar(0.01);
-
-case 2:
-
-return p.position.clone().multiplyScalar(-0.02/r);
-
-case 3:
-
-return new THREE.Vector3(
-Math.sin(p.position.y),
-Math.cos(p.position.z),
-Math.sin(p.position.x)
-).multiplyScalar(0.02);
-
-}
-
-}
-
-/* animation */
 
 function animate(){
 
 particles.forEach(p=>{
 
-const force = new THREE.Vector3(
+let fx = eval(document.getElementById("fx").value || "-y")
+let fy = eval(document.getElementById("fy").value || "x")
+let fz = eval(document.getElementById("fz").value || "0")
 
-field.fx(p.position.x,p.position.y,p.position.z),
-
-field.fy(p.position.x,p.position.y,p.position.z),
-
-field.fz(p.position.x,p.position.y,p.position.z)
-
-).multiplyScalar(0.01 * fieldStrength)
-
-p.velocity.add(force)
-
+p.velocity.add(new THREE.Vector3(fx,fy,fz).multiplyScalar(0.01*fieldStrength))
 p.position.add(p.velocity)
 
-/* trail update */
+});
 
-p.trail.push(p.position.clone())
-
-if(p.trail.length > 60) p.trail.shift()
-
-p.trailLine.geometry.setFromPoints(p.trail)
-
-})
-
-controls.update()
-
-renderer.render(scene,camera)
-
-requestAnimationFrame(animate)
-
+renderer.render(scene,camera);
+requestAnimationFrame(animate);
 }
 
-/* spawn events */
-
-setInterval(()=>{
-
-spawnParticle()
-
-},900);
-
+setInterval(spawn,1000);
 animate();
 
 </script>
 
 </body>
-
 </html>
