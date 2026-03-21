@@ -474,9 +474,50 @@ field.fy = new Function("x","y","z",
 field.fz = new Function("x","y","z",
 "return " + (document.getElementById("fz").value || "0"));
 
+generateField(); // regenerate arrows
+
 }catch{
 alert("Invalid field equations");
 }
+
+}
+
+/* ---------------- VECTOR FIELD (ARROWS) ---------------- */
+
+let arrows = [];
+
+function generateField(){
+
+arrows.forEach(a => scene.remove(a));
+arrows = [];
+
+const step = 12;
+
+for(let x=-40;x<=40;x+=step){
+for(let y=-40;y<=40;y+=step){
+for(let z=-40;z<=40;z+=step){
+
+let fx = field.fx(x,y,z);
+let fy = field.fy(x,y,z);
+let fz = field.fz(x,y,z);
+
+let dir = new THREE.Vector3(fx,fy,fz);
+
+if(dir.length() < 0.01) continue;
+
+dir.normalize();
+
+let arrow = new THREE.ArrowHelper(
+dir,
+new THREE.Vector3(x,y,z),
+4,
+0x66ccff
+);
+
+scene.add(arrow);
+arrows.push(arrow);
+
+}}}
 
 }
 
@@ -486,7 +527,7 @@ let particles = [];
 
 function spawn(){
 
-let geo = new THREE.SphereGeometry(0.5,8,8);
+let geo = new THREE.SphereGeometry(0.6,8,8);
 let mat = new THREE.MeshBasicMaterial({color:0xffcc66});
 
 let p = new THREE.Mesh(geo,mat);
@@ -498,6 +539,18 @@ p.velocity = new THREE.Vector3(
 (Math.random()-0.5)*2,
 (Math.random()-0.5)*2
 );
+
+/* ---- TRAIL ---- */
+
+p.trail = [];
+p.trailLine = new THREE.Line(
+new THREE.BufferGeometry(),
+new THREE.LineBasicMaterial({color:0xffaa66})
+);
+
+scene.add(p.trailLine);
+
+/* ---- ADD ---- */
 
 scene.add(p);
 particles.push(p);
@@ -516,10 +569,22 @@ field.fy(p.position.x,p.position.y,p.position.z),
 field.fz(p.position.x,p.position.y,p.position.z)
 ).multiplyScalar(0.01 * fieldStrength);
 
+/* physics */
 p.velocity.add(force);
+p.velocity.multiplyScalar(0.995); // damping
 p.position.add(p.velocity);
 
+/* ---- TRAIL UPDATE ---- */
+
+p.trail.push(p.position.clone());
+
+if(p.trail.length > 80) p.trail.shift();
+
+p.trailLine.geometry.setFromPoints(p.trail);
+
 });
+
+/* render */
 
 controls.update();
 renderer.render(scene,camera);
@@ -527,8 +592,10 @@ requestAnimationFrame(animate);
 
 }
 
-setInterval(spawn,800);
+/* ---------------- START ---------------- */
 
+generateField();
+setInterval(spawn,700);
 animate();
 
 </script>
