@@ -264,15 +264,43 @@ id:2,
 title:"Algebraic Characterization of Limit Cycles",
 field:"Dynamical Systems",
 tags:["Limit cycles","Geometry"],
-content:`
+content: `
+
 <p>
-$$P(R^2)=0,\\quad Q(R)=0$$
+Consider a planar polynomial vector field:
+$$
+\\dot{x} = P(x,y), \\quad \\dot{y} = Q(x,y)
+$$
+where \(P, Q\) are polynomials.
 </p>
+
 <p>
-Can limit cycles emerge as solutions?
+Suppose there exists a class of probing curves parameterized by a scalar quantity \(R\), such that limit cycles correspond to solutions of:
+$$
+P(R^2) = 0, \\quad Q(R) = 0
+$$
 </p>
+
+<p>
+Here, \(R\) is not necessarily radial in the Euclidean sense, but may represent a geometric or functional measure associated with closed trajectories.
+</p>
+
+<p>
+<strong>Exploratory Questions:</strong>
+</p>
+
+<ul>
+<li>Can limit cycles be characterized as simultaneous solutions of such algebraic constraints?</li>
+<li>What class of probing curves makes this formulation meaningful?</li>
+<li>Does the structure encode multiplicity or stability information?</li>
+<li>Can this reduce detection of limit cycles to algebraic conditions?</li>
+</ul>
+
+<p style="opacity:0.6;font-size:13px;">
+Not a claim. Not a theorem. A direction.
+</p>
+
 `
-}
 
 ];
 
@@ -329,31 +357,66 @@ let expr = document.getElementById("func").value
 .replaceAll("^","**")
 .replaceAll("sin","Math.sin")
 .replaceAll("cos","Math.cos")
-.replaceAll("exp","Math.exp")
+.replaceAll("exp","Math.exp");
 
-let canvas = document.getElementById("graph")
-let ctx = canvas.getContext("2d")
+let canvas = document.getElementById("graph");
+let ctx = canvas.getContext("2d");
 
-canvas.width = canvas.clientWidth
-canvas.height = canvas.clientHeight
+canvas.width = canvas.clientWidth;
+canvas.height = canvas.clientHeight;
 
-ctx.clearRect(0,0,canvas.width,canvas.height)
+ctx.clearRect(0,0,canvas.width,canvas.height);
 
-ctx.beginPath()
+/* grid */
+ctx.strokeStyle="rgba(255,255,255,0.1)";
+for(let i=0;i<canvas.width;i+=50){
+  ctx.beginPath();
+  ctx.moveTo(i,0);
+  ctx.lineTo(i,canvas.height);
+  ctx.stroke();
+}
+for(let i=0;i<canvas.height;i+=50){
+  ctx.beginPath();
+  ctx.moveTo(0,i);
+  ctx.lineTo(canvas.width,i);
+  ctx.stroke();
+}
+
+/* axes */
+ctx.strokeStyle="rgba(255,255,255,0.3)";
+ctx.beginPath();
+ctx.moveTo(0,canvas.height/2);
+ctx.lineTo(canvas.width,canvas.height/2);
+ctx.stroke();
+
+ctx.beginPath();
+ctx.moveTo(canvas.width/2,0);
+ctx.lineTo(canvas.width/2,canvas.height);
+ctx.stroke();
+
+/* plot */
+ctx.beginPath();
+ctx.strokeStyle="#ffd8a6";
 
 for(let px=0;px<canvas.width;px++){
 
-let x = (px/canvas.width)*20-10
-let y = eval(expr.replace(/x/g,x))
+let x = (px/canvas.width)*20 - 10;
+let y;
 
-let py = canvas.height/2 - y*20
-
-if(px===0) ctx.moveTo(px,py)
-else ctx.lineTo(px,py)
+try{
+y = eval(expr.replace(/x/g,`(${x})`));
+}catch{
+continue;
 }
 
-ctx.strokeStyle="#ffd8a6"
-ctx.stroke()
+let py = canvas.height/2 - y*20;
+
+if(px===0) ctx.moveTo(px,py);
+else ctx.lineTo(px,py);
+
+}
+
+ctx.stroke();
 
 }
 
@@ -368,56 +431,104 @@ ctx.stroke()
 const container = document.getElementById("sandbox3d");
 
 const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(60,1,0.1,1000);
+
+const camera = new THREE.PerspectiveCamera(
+60,
+container.clientWidth/container.clientHeight,
+0.1,
+1000
+);
+
 camera.position.set(0,30,100);
 
-const renderer = new THREE.WebGLRenderer();
+const renderer = new THREE.WebGLRenderer({antialias:true});
 renderer.setSize(container.clientWidth,container.clientHeight);
 container.appendChild(renderer.domElement);
 
 const controls = new THREE.OrbitControls(camera,renderer.domElement);
 
-let particles = [];
+/* ---------------- FIELD SYSTEM ---------------- */
+
+let field = {
+fx:(x,y,z)=> -y,
+fy:(x,y,z)=> x,
+fz:(x,y,z)=> 0
+};
+
 let fieldStrength = 1;
 
 document.getElementById("strength").oninput = e=>{
-fieldStrength = e.target.value;
+fieldStrength = parseFloat(e.target.value);
 };
+
+function updateField(){
+
+try{
+
+field.fx = new Function("x","y","z",
+"return " + (document.getElementById("fx").value || "-y"));
+
+field.fy = new Function("x","y","z",
+"return " + (document.getElementById("fy").value || "x"));
+
+field.fz = new Function("x","y","z",
+"return " + (document.getElementById("fz").value || "0"));
+
+}catch{
+alert("Invalid field equations");
+}
+
+}
+
+/* ---------------- PARTICLES ---------------- */
+
+let particles = [];
 
 function spawn(){
 
-let geo = new THREE.SphereGeometry(0.5);
+let geo = new THREE.SphereGeometry(0.5,8,8);
 let mat = new THREE.MeshBasicMaterial({color:0xffcc66});
+
 let p = new THREE.Mesh(geo,mat);
 
+p.position.set(0,0,0);
+
 p.velocity = new THREE.Vector3(
-Math.random()-0.5,
-Math.random()-0.5,
-Math.random()-0.5
+(Math.random()-0.5)*2,
+(Math.random()-0.5)*2,
+(Math.random()-0.5)*2
 );
 
 scene.add(p);
 particles.push(p);
+
 }
+
+/* ---------------- ANIMATION ---------------- */
 
 function animate(){
 
 particles.forEach(p=>{
 
-let fx = eval(document.getElementById("fx").value || "-y")
-let fy = eval(document.getElementById("fy").value || "x")
-let fz = eval(document.getElementById("fz").value || "0")
+let force = new THREE.Vector3(
+field.fx(p.position.x,p.position.y,p.position.z),
+field.fy(p.position.x,p.position.y,p.position.z),
+field.fz(p.position.x,p.position.y,p.position.z)
+).multiplyScalar(0.01 * fieldStrength);
 
-p.velocity.add(new THREE.Vector3(fx,fy,fz).multiplyScalar(0.01*fieldStrength))
-p.position.add(p.velocity)
+p.velocity.add(force);
+p.position.add(p.velocity);
 
 });
 
+controls.update();
 renderer.render(scene,camera);
 requestAnimationFrame(animate);
+
 }
 
-setInterval(spawn,1000);
+setInterval(spawn,800);
+
 animate();
 
 </script>
