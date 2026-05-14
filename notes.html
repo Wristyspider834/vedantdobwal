@@ -1,1 +1,526 @@
+<!doctype html>
+<html lang="en">
 
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Notes Archive — Vedant Dobwal</title>
+
+<link rel="icon" type="image/png" href="favicon.png">
+
+<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+:root{
+--bg:#050505;
+--panel:rgba(255,255,255,0.05);
+--border:rgba(255,255,255,0.12);
+--accent:#ffd8a6;
+--text:white;
+--soft:rgba(255,255,255,0.75);
+}
+
+*{
+box-sizing:border-box;
+}
+
+body{
+margin:0;
+font-family:'Arimo',sans-serif;
+background:
+linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.8)),
+url("gradient.jpg");
+background-size:cover;
+background-attachment:fixed;
+color:var(--text);
+padding:40px 24px;
+}
+
+/* =========================
+   TOP NAV
+========================= */
+
+.topbar{
+max-width:1300px;
+margin:auto;
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:40px;
+flex-wrap:wrap;
+gap:20px;
+}
+
+.logo{
+font-size:24px;
+font-weight:700;
+letter-spacing:0.5px;
+color:var(--accent);
+}
+
+.nav{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.nav a{
+text-decoration:none;
+color:white;
+padding:8px 16px;
+border-radius:999px;
+border:1px solid rgba(255,255,255,0.12);
+background:rgba(255,255,255,0.04);
+transition:0.25s;
+font-size:14px;
+}
+
+.nav a:hover{
+background:rgba(255,216,166,0.12);
+border-color:rgba(255,216,166,0.3);
+color:var(--accent);
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+max-width:1300px;
+margin:auto;
+margin-bottom:40px;
+padding:40px;
+border-radius:22px;
+background:
+linear-gradient(135deg,
+rgba(255,216,166,0.08),
+rgba(255,255,255,0.03));
+border:1px solid rgba(255,255,255,0.12);
+position:relative;
+overflow:hidden;
+}
+
+.hero::before{
+content:"";
+position:absolute;
+inset:0;
+background:
+radial-gradient(circle at top right,
+rgba(255,216,166,0.12),
+transparent 40%);
+pointer-events:none;
+}
+
+.hero h1{
+margin:0;
+font-size:48px;
+line-height:1.1;
+color:var(--accent);
+}
+
+.hero p{
+max-width:800px;
+margin-top:18px;
+font-size:17px;
+line-height:1.7;
+color:var(--soft);
+}
+
+/* =========================
+   SECTION TITLE
+========================= */
+
+.section-title{
+max-width:1300px;
+margin:auto;
+margin-bottom:20px;
+font-size:24px;
+font-weight:600;
+color:var(--accent);
+}
+
+/* =========================
+   NOTES GRID
+========================= */
+
+.notes-grid{
+max-width:1300px;
+margin:auto;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(340px,1fr));
+gap:26px;
+}
+
+/* =========================
+   NOTE CARD
+========================= */
+
+.note-card{
+background:var(--panel);
+border:1px solid var(--border);
+border-radius:20px;
+overflow:hidden;
+transition:0.35s;
+backdrop-filter:blur(8px);
+position:relative;
+}
+
+.note-card:hover{
+transform:translateY(-6px);
+border-color:rgba(255,216,166,0.4);
+box-shadow:
+0 0 40px rgba(255,216,166,0.08);
+}
+
+.note-preview{
+width:100%;
+height:240px;
+border:none;
+background:black;
+}
+
+.note-content{
+padding:24px;
+}
+
+.note-title{
+font-size:22px;
+font-weight:700;
+color:var(--accent);
+margin-bottom:10px;
+}
+
+.note-meta{
+font-size:13px;
+color:rgba(255,255,255,0.55);
+margin-bottom:16px;
+}
+
+.note-description{
+font-size:15px;
+line-height:1.7;
+color:var(--soft);
+margin-bottom:18px;
+}
+
+.note-tags{
+display:flex;
+flex-wrap:wrap;
+gap:8px;
+margin-bottom:20px;
+}
+
+.tag{
+padding:5px 12px;
+border-radius:999px;
+background:rgba(255,216,166,0.08);
+border:1px solid rgba(255,216,166,0.25);
+font-size:12px;
+color:var(--accent);
+}
+
+.note-buttons{
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+}
+
+.note-buttons a{
+text-decoration:none;
+padding:10px 18px;
+border-radius:10px;
+font-size:14px;
+transition:0.25s;
+}
+
+.open-btn{
+background:var(--accent);
+color:black;
+font-weight:600;
+}
+
+.open-btn:hover{
+transform:translateY(-2px);
+}
+
+.archive-btn{
+border:1px solid rgba(255,255,255,0.15);
+color:white;
+background:rgba(255,255,255,0.04);
+}
+
+.archive-btn:hover{
+border-color:rgba(255,216,166,0.3);
+color:var(--accent);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+max-width:1300px;
+margin:auto;
+margin-top:60px;
+padding-top:24px;
+border-top:1px solid rgba(255,255,255,0.08);
+font-size:13px;
+color:rgba(255,255,255,0.45);
+text-align:center;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:700px){
+
+.hero{
+padding:28px;
+}
+
+.hero h1{
+font-size:34px;
+}
+
+.note-preview{
+height:200px;
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =========================
+     TOPBAR
+========================= -->
+
+<div class="topbar">
+
+<div class="logo">
+Vedant Dobwal
+</div>
+
+<div class="nav">
+
+<a href="index.html">home</a>
+<a href="explore.html">exploratory corner</a>
+<a href="notes.html">notes</a>
+
+</div>
+
+</div>
+
+<!-- =========================
+     HERO
+========================= -->
+
+<div class="hero">
+
+<h1>
+Open Notes Archive
+</h1>
+
+<p>
+
+A continuously evolving collection of notes written to reduce the friction between curiosity and understanding.  
+These notes are not intended merely as summaries, but as conceptual bridges — connecting intuition, mathematical structure, and physical interpretation.
+
+</p>
+
+</div>
+
+<!-- =========================
+     SECTION TITLE
+========================= -->
+
+<div class="section-title">
+Featured Notes
+</div>
+
+<!-- =========================
+     NOTES GRID
+========================= -->
+
+<div class="notes-grid">
+
+<!-- NOTE 1 -->
+
+<div class="note-card">
+
+<iframe
+class="note-preview"
+src="https://archive.org/embed/YOUR_ARCHIVE_IDENTIFIER_1">
+</iframe>
+
+<div class="note-content">
+
+<div class="note-title">
+Quantum Physics I
+</div>
+
+<div class="note-meta">
+Version 2.1 · Updated May 2026
+</div>
+
+<div class="note-description">
+
+Structured notes covering foundational quantum mechanics with emphasis on intuition, operators, wavefunctions, Hilbert spaces, perturbation theory, and conceptual understanding.
+
+</div>
+
+<div class="note-tags">
+
+<div class="tag">Quantum Mechanics</div>
+<div class="tag">Operators</div>
+<div class="tag">Hilbert Spaces</div>
+
+</div>
+
+<div class="note-buttons">
+
+<a class="open-btn"
+href="https://archive.org/details/YOUR_ARCHIVE_IDENTIFIER_1"
+target="_blank">
+Open Note
+</a>
+
+<a class="archive-btn"
+href="https://archive.org/download/YOUR_ARCHIVE_IDENTIFIER_1/YOUR_FILE.pdf"
+target="_blank">
+Download PDF
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- NOTE 2 -->
+
+<div class="note-card">
+
+<iframe
+class="note-preview"
+src="https://archive.org/embed/laplaceobs">
+</iframe>
+
+<div class="note-content">
+
+<div class="note-title">
+Scalar Functions, Exponential Components, and the Laplace Transform
+</div>
+
+<div class="note-meta">
+Version 1.4 · Updated April 2026
+</div>
+
+<div class="note-description">
+
+A conceptual and computational introduction to Laplace transforms, exponential components, poles, analytic continuation, and time-domain structure.
+
+</div>
+
+<div class="note-tags">
+
+<div class="tag">Transforms</div>
+<div class="tag">Complex Analysis</div>
+<div class="tag">Differential Equations</div>
+
+</div>
+
+<div class="note-buttons">
+
+<a class="open-btn"
+href="https://archive.org/details/laplaceobs"
+target="_blank">
+Open Note
+</a>
+
+<a class="archive-btn"
+href="https://archive.org/download/laplaceobs/main%20%2856%29.pdf"
+target="_blank">
+Download PDF
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- NOTE 3 -->
+
+<div class="note-card">
+
+<iframe
+class="note-preview"
+src="https://archive.org/embed/YOUR_ARCHIVE_IDENTIFIER_3">
+</iframe>
+
+<div class="note-content">
+
+<div class="note-title">
+Electrodynamics & Fields
+</div>
+
+<div class="note-meta">
+Version 1.0 · Updated March 2026
+</div>
+
+<div class="note-description">
+
+Notes exploring electromagnetic fields, Maxwellian intuition, field geometry, induced structures, and dynamic interactions.
+
+</div>
+
+<div class="note-tags">
+
+<div class="tag">Electrodynamics</div>
+<div class="tag">Maxwell Theory</div>
+<div class="tag">Field Dynamics</div>
+
+</div>
+
+<div class="note-buttons">
+
+<a class="open-btn"
+href="https://archive.org/details/YOUR_ARCHIVE_IDENTIFIER_3"
+target="_blank">
+Open Note
+</a>
+
+<a class="archive-btn"
+href="https://archive.org/download/YOUR_ARCHIVE_IDENTIFIER_3/YOUR_FILE.pdf"
+target="_blank">
+Download PDF
+</a>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<div class="footer">
+
+Open scientific notes archive · continuously evolving with research and understanding
+
+</div>
+
+</body>
+</html>
