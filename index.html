@@ -333,6 +333,52 @@ animation:labPulse 3s infinite;
 
 }
 
+.notes-glow{
+
+background:linear-gradient(135deg,#ff69c7,#ff2f92);
+color:white !important;
+font-weight:600;
+
+box-shadow:
+0 0 8px rgba(255,105,199,0.6),
+0 0 18px rgba(255,50,146,0.35);
+
+animation:notesPulse 3s infinite;
+
+transition:all 0.25s ease;
+
+}
+
+.notes-glow:hover{
+
+transform:translateY(-1px) scale(1.05);
+
+box-shadow:
+0 0 14px rgba(255,105,199,0.95),
+0 0 28px rgba(255,50,146,0.55);
+
+}
+
+@keyframes notesPulse{
+
+0%{
+box-shadow:
+0 0 6px rgba(255,105,199,0.45);
+}
+
+50%{
+box-shadow:
+0 0 18px rgba(255,105,199,0.95),
+0 0 34px rgba(255,50,146,0.4);
+}
+
+100%{
+box-shadow:
+0 0 6px rgba(255,105,199,0.45);
+}
+
+}
+
     @media(max-width:900px){
       .grid{grid-template-columns:1fr;}
       aside{position:static;}
