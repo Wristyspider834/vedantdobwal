@@ -153,6 +153,10 @@ margin:0;
 font-size:48px;
 line-height:1.1;
 color:var(--accent);
+
+text-shadow:
+0 0 15px rgba(255,105,199,0.35),
+0 0 35px rgba(255,105,199,0.15);
 }
 
 .hero p{
@@ -346,11 +350,58 @@ Vedant Dobwal
 
 <a href="index.html">home</a>
 <a href="explore.html">exploratory corner</a>
-<a href="notes.html">notes</a>
+<a href="support.html" class="support-tab">support</a>
 
 </div>
 
 </div>
+
+.support-tab{
+
+background:linear-gradient(
+135deg,
+#ff4d4d,
+#c1121f
+) !important;
+
+color:white !important;
+font-weight:600;
+
+border:1px solid rgba(255,80,80,0.45) !important;
+
+box-shadow:
+0 0 8px rgba(255,80,80,0.55),
+0 0 18px rgba(193,18,31,0.35);
+
+animation:supportPulse 3s infinite;
+
+}
+
+.support-tab:hover{
+
+transform:translateY(-1px) scale(1.05);
+
+box-shadow:
+0 0 16px rgba(255,80,80,0.95),
+0 0 30px rgba(193,18,31,0.55);
+
+}
+
+@keyframes supportPulse{
+
+0%,100%{
+box-shadow:
+0 0 8px rgba(255,80,80,0.55),
+0 0 18px rgba(193,18,31,0.35);
+}
+
+50%{
+box-shadow:
+0 0 18px rgba(255,80,80,0.95),
+0 0 40px rgba(193,18,31,0.55);
+}
+
+}
 
 <!-- =========================
      HERO
@@ -391,7 +442,7 @@ Featured Notes
 
 <iframe
 class="note-preview"
-src="https://archive.org/details/quantum-physics-1">
+src="https://archive.org/embed/quantum-physics-1">
 </iframe>
 
 <div class="note-content">
@@ -420,7 +471,7 @@ Structured notes covering foundational quantum mechanics with emphasis on intuit
 <div class="note-buttons">
 
 <a class="open-btn"
-href="https://archive.org/details/quantum-physics-1"
+href="https://archive.org/embed/quantum-physics-1"
 target="_blank">
 Open Note
 </a>
@@ -473,7 +524,7 @@ A conceptual and computational introduction to Laplace transforms, exponential c
 <div class="note-buttons">
 
 <a class="open-btn"
-href="https://archive.org/details/laplaceobs"
+href="https://archive.org/embed/laplaceobs"
 target="_blank">
 Open Note
 </a>
@@ -496,7 +547,7 @@ Download PDF
 
 <iframe
 class="note-preview"
-src="https://archive.org/details/laplacemodern">
+src="https://archive.org/embed/laplacemodern">
 </iframe>
 
 <div class="note-content">
@@ -525,7 +576,7 @@ Notes for Laplace Tranform Theory - 2/Modern Analysis, and More!
 <div class="note-buttons">
 
 <a class="open-btn"
-href="https://archive.org/details/laplacemodern"
+href="https://archive.org/embed/laplacemodern"
 target="_blank">
 Open Note
 </a>
