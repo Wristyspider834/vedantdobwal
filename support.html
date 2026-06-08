@@ -124,7 +124,83 @@ box-shadow:
 }
 
 }
+   
+/* ==========================
+   quote card
+========================== */
 
+.quote-card{
+
+display:flex;
+flex-direction:column;
+justify-content:center;
+
+height:350px;
+
+padding:30px;
+
+text-align:center;
+
+}
+
+.quote-card{
+position:relative;
+overflow:hidden;
+}
+
+.quote-card::before{
+
+content:"∫  π  φ  e  i";
+
+position:absolute;
+
+font-family:'Cormorant Garamond',serif;
+
+font-size:140px;
+
+opacity:0.03;
+
+left:50%;
+top:50%;
+
+transform:translate(-50%,-50%);
+
+pointer-events:none;
+
+}
+
+#quoteText{
+
+font-family:'Cormorant Garamond',serif;
+
+font-size:34px;
+
+line-height:1.5;
+
+color:#ffd9d9;
+
+opacity:1;
+
+transition:opacity 0.8s ease;
+
+}
+
+#quoteAuthor{
+
+margin-top:25px;
+
+font-size:16px;
+
+letter-spacing:1px;
+
+color:rgba(255,255,255,0.65);
+
+font-style:italic;
+
+transition:opacity 0.8s ease;
+
+}
+   
 /* ==========================
    HERO
 ========================== */
@@ -395,23 +471,19 @@ Every contribution directly supports the growth of these resources.
 
 <div class="panel">
 
-<h2>Where Support Goes</h2>
+<h2>The Archive Speaks</h2>
 
-<ul>
+<div class="quote-card">
 
-<li>Development of open-access notes</li>
+<div id="quoteText">
 
-<li>Research simulations and visualizations</li>
+"Every archive is an act of faith in future curiosity."
 
-<li>Website hosting and infrastructure</li>
+</div>
 
-<li>Future educational resources</li>
+<div id="quoteAuthor">
 
-<li>Exploratory Corner community features</li>
-
-<li>Independent research projects</li>
-
-</ul>
+— Anonymous
 
 </div>
 
@@ -430,6 +502,78 @@ Support helps create a space where ideas, learning, and exploration remain freel
 Support helps sustain open notes, simulations, research tools, and future educational projects.
 
 </div>
+<script>
 
+const archiveQuotes = [
+
+{
+text:"Every archive is an act of faith in future curiosity.",
+author:"Anonymous"
+},
+
+{
+text:"What we know is a drop, what we do not know is an ocean.",
+author:"Isaac Newton"
+},
+
+{
+text:"The book of nature is written in the language of mathematics.",
+author:"Galileo Galilei"
+},
+
+{
+text:"Pure mathematics is, in its way, the poetry of logical ideas.",
+author:"Albert Einstein"
+},
+
+{
+text:"Mathematics knows no races or geographic boundaries.",
+author:"David Hilbert"
+},
+
+{
+text:"The task is not so much to see what no one has seen, but to think what nobody has yet thought.",
+author:"Erwin Schrödinger"
+},
+
+{
+text:"Knowledge survives because someone chooses to preserve it.",
+author:"The Archive"
+}
+
+];
+
+let q = 0;
+
+setInterval(()=>{
+
+const quoteText =
+document.getElementById("quoteText");
+
+const quoteAuthor =
+document.getElementById("quoteAuthor");
+
+quoteText.style.opacity = 0;
+quoteAuthor.style.opacity = 0;
+
+setTimeout(()=>{
+
+q = (q+1) % archiveQuotes.length;
+
+quoteText.innerText =
+archiveQuotes[q].text;
+
+quoteAuthor.innerText =
+"— " + archiveQuotes[q].author;
+
+quoteText.style.opacity = 1;
+quoteAuthor.style.opacity = 1;
+
+},700);
+
+},7000);
+
+</script>
+   
 </body>
 </html>
