@@ -10,8 +10,8 @@
 
 <link rel="icon" type="image/png" href="favicon.png">
 
-<link href="https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&display=swap" rel="stylesheet">
+   
 <style>
 
 :root{
@@ -30,8 +30,12 @@ body{
 margin:0;
 font-family:'Arimo',sans-serif;
 background:
-linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.8)),
-url("gradient.jpg");
+linear-gradient(
+135deg,
+#540000,
+#7a0000,
+#3a0000
+);
 background-size:cover;
 background-attachment:fixed;
 color:white;
@@ -57,6 +61,12 @@ margin-bottom:40px;
 font-size:24px;
 font-weight:700;
 color:#ffd8a6;
+}
+
+.hero h1,
+.panel h2,
+.logo{
+font-family:'Cormorant Garamond',serif;
 }
 
 .nav{
@@ -137,16 +147,52 @@ border:1px solid rgba(255,255,255,0.12);
 
 margin-bottom:40px;
 
+position:relative;
+overflow:hidden;
+
+}
+
+.hero::after{
+
+content:"";
+
+position:absolute;
+
+right:-80px;
+top:-50px;
+
+width:500px;
+height:500px;
+
+background:url("Spiral.jpeg");
+
+background-size:contain;
+background-repeat:no-repeat;
+background-position:center;
+
+opacity:0.12;
+
+pointer-events:none;
+
+filter:brightness(1.2);
+
 }
 
 .hero h1{
 
 margin:0;
-font-size:52px;
-color:#ff8a8a;
+
+font-size:64px;
+
+color:#ffd9d9;
+
+font-family:'Cormorant Garamond',serif;
+
+letter-spacing:1px;
 
 text-shadow:
-0 0 12px rgba(255,80,80,0.4);
+0 0 12px rgba(255,80,80,0.4),
+0 0 30px rgba(255,255,255,0.08);
 
 }
 
@@ -315,7 +361,7 @@ Vedant Dobwal
 <div class="hero">
 
 <h1>
-Support Open Learning & Independent Research
+Patronage of Curiosity
 </h1>
 
 <p>
